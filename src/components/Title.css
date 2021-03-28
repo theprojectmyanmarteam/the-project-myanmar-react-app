@@ -1,0 +1,13 @@
+#title-container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #0f0f0f;
+  height: 100%;
+}
+
+#title {
+  color: #fcfcfc;
+  font-size: 32px;
+}
