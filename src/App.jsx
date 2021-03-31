@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Title from './components/Title';
+import Quiz from './components/Quiz';
 
 function App() {
+  const [showQuiz, setShowQuiz] = useState(false);
+
   return (
     <div className="App">
-      <Title />
+      <Title
+        onHide={() => {
+          setShowQuiz(true);
+        }}
+      />
+      <Quiz visible={showQuiz} />
     </div>
   );
 }
