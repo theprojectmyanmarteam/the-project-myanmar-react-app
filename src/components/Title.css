@@ -1,27 +1,15 @@
-#title-container {
+#splash-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+#splash-content {
   display: flex;
-  align-content: center;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: #0f0f0f;
+  position: relative;
   height: 100%;
-}
-
-@keyframes fadeInOpacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  opacity: 1;
-  animation-name: fadeInOpacity;
-  animation-iteration-count: 1;
-  animation-timing-function: ease-in;
-  animation-duration: 1.5s;
 }
 
 #down-div {
@@ -42,11 +30,11 @@
   border: none;
 }
 
-#down-button:hover {
+#down-button:hover,
+#down-button:focus {
   background-color: #212529;
 }
 
 .title {
-  color: #fcfcfc;
-  font-size: 32px;
+  margin-bottom: 100px;
 }
