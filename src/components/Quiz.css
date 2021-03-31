@@ -1,5 +1,6 @@
 #quiz-container {
   height: 100%;
+  overflow: hidden;
 }
 
 #quiz-question-container {

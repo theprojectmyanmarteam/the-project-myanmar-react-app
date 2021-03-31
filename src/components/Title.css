@@ -1,5 +1,6 @@
 #splash-container {
   height: 100%;
+  overflow: hidden;
 }
 
 #splash-content {

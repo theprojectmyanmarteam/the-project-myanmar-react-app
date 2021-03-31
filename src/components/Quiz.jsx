@@ -27,8 +27,8 @@ const Quiz = ({ visible }) => {
     display: renderQuestion ? 'flex' : 'none',
     config: config.molasses,
     onRest: () => {
-      if (!showQuestion) {
-        renderQuestion(false);
+      if (!showQuestion && renderQuestion) {
+        setRenderQuestion(false);
       }
     },
   });
@@ -41,8 +41,8 @@ const Quiz = ({ visible }) => {
     display: renderWrongAnswer ? 'flex' : 'none',
     config: config.molasses,
     onRest: () => {
-      if (!showWrongAnswer) {
-        renderWrongAnswer(false);
+      if (!showWrongAnswer && renderWrongAnswer) {
+        setRenderWrongAnswer(false);
       }
     },
   });

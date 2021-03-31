@@ -46,7 +46,7 @@ const Title = ({ onHide, visible }) => {
     opacity: showTitle ? 1 : 0,
     display: renderTitle ? 'block' : 'none',
     onRest: () => {
-      if (!showTitle) {
+      if (!showTitle && renderTitle) {
         setRenderTitle(false);
       }
     },
