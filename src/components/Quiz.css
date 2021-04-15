@@ -1,5 +1,7 @@
 #quiz-container {
   height: 100%;
+  width: 100%;
+  display: flex;
   overflow: hidden;
 }
 
@@ -13,7 +15,7 @@
 }
 
 #quiz-wrong-container {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-flow: column nowrap;
@@ -69,6 +71,7 @@
 #quiz-try-again-btn {
   border: 0;
   font-size: 20px;
+  white-space: nowrap;
 }
 
 #quiz-try-again-btn:hover {

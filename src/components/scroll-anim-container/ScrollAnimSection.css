@@ -1,0 +1,53 @@
+.scroll-anim-section {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+}
+
+.scroll-anim-section-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.up-div {
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
+.down-div {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.left-div {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  left: 0;
+}
+
+.right-div {
+  display: flex;
+  position: absolute;
+  height: 100%;
+  right: 0;
+}
+
+.nav-button {
+  background-color: #0f0f0f;
+  width: 100%;
+  border: none;
+}
+
+.nav-button:hover,
+.nav-button:focus {
+  background-color: #212529;
+}

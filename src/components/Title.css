@@ -1,6 +1,8 @@
 #splash-container {
   height: 100%;
+  width: 100%;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 #splash-content {
@@ -36,5 +38,5 @@
 }
 
 .title {
-  margin-bottom: 100px;
+  margin-bottom: 0px;
 }
