@@ -1,0 +1,78 @@
+.scroll-anim-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.up-div {
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
+.down-div {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.down-text {
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+
+.up-text {
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.left-div {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  left: 0;
+  white-space: nowrap;
+}
+
+.left-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-left: 6px;
+}
+
+.right-div {
+  display: flex;
+  position: absolute;
+  height: 100%;
+  right: 0;
+  white-space: nowrap;
+}
+
+.right-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-right: 6px;
+}
+
+.nav-button {
+  background-color: #0f0f0f;
+  width: 100%;
+  border: none;
+}
+
+.nav-button:hover,
+.nav-button:focus {
+  background-color: #212529;
+}
