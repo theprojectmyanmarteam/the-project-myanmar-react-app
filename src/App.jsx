@@ -1,21 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Title from './components/Title';
 import Quiz from './components/Quiz';
+import ScrollAnimContainer from './components/scroll-anim-container/ScrollAnimContainer';
 
 function App() {
-  const [showQuiz, setShowQuiz] = useState(false);
-
   return (
     <div className="App">
-      <Title
-        onHide={() => {
-          setShowQuiz(true);
-        }}
-      />
-      <Quiz visible={showQuiz} />
+      <ScrollAnimContainer>
+        <Title />
+        <Quiz />
+      </ScrollAnimContainer>
     </div>
   );
 }
