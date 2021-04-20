@@ -63,6 +63,10 @@ const ScrollAnimItem = ({
         moveNext();
       }
     }
+    // allow to scroll back to the top; not allowing left scroll
+    else if (prevScrollEnabled && !horizontal) {
+      movePrev();
+    }
   };
 
   return (
