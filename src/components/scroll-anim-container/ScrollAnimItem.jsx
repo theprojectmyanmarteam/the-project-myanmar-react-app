@@ -79,8 +79,9 @@ const ScrollAnimItem = ({
           showNext: () => setShowNext(true),
           movePrev,
           showPrev: () => setShowPrev(true),
-          shown,
+          // shown,
         },
+        shown,
       })}
       {showPrev && !horizontal && (
         <animated.div className="up-div" style={prevButtonAnim}>

@@ -1,18 +1,19 @@
-// import React, { useState } from 'react';
-import React from 'react';
-// import Sound from 'react-sound';
+import React, { useState } from 'react';
+// import React from 'react';
+import Sound from 'react-sound';
+// import Button from 'react-bootstrap/Button';
 
 import './Mingalarbar.css';
-// import soundFile from '../audio/PotsPans.mp3';
+import soundFile from '../../audio/PotsPans.mp3';
 
-// const Mingalarbar = ({ controllers }) => {
 const Mingalarbar = () => {
-  //   const [playStatus, setPlayStatus] = useState(Sound.status.PLAYING);
-  //   const [soundPosition, setSoundPosition] = useState(0);
+  // const Mingalarbar = () => {
+  const [playStatus, setPlayStatus] = useState(Sound.status.PAUSED);
+  const [soundPosition, setSoundPosition] = useState(0);
 
   return (
     <div id="mingalarbar-content">
-      {/* <Sound
+      <Sound
         url={soundFile}
         playStatus={playStatus}
         playFromPosition={soundPosition}
@@ -25,9 +26,8 @@ const Mingalarbar = () => {
         onFinishedPlaying={() => {
           setPlayStatus(Sound.status.STOPPED);
         }}
-        loop
         volume={100}
-      /> */}
+      />
       {/* <ReactAudioPlayer src={soundFile} autoPlay loop /> */}
       <p className="h1 title"> Mingalarbar </p>
     </div>
