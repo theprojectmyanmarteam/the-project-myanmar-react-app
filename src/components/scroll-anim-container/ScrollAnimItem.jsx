@@ -21,6 +21,7 @@ const ScrollAnimItem = ({
   moveNext,
   movePrev,
   horizontal,
+  shown,
 }) => {
   const [nextScrollEnabled, setNextScrollEnabled] = useState(
     nextButton.scrollable
@@ -78,6 +79,7 @@ const ScrollAnimItem = ({
           showNext: () => setShowNext(true),
           movePrev,
           showPrev: () => setShowPrev(true),
+          shown,
         },
       })}
       {showPrev && !horizontal && (
@@ -131,6 +133,7 @@ ScrollAnimItem.propTypes = {
   moveNext: PropTypes.func,
   movePrev: PropTypes.func,
   horizontal: PropTypes.bool, // orientation of the buttons
+  shown: PropTypes.bool, // true if this current element is shown
 };
 
 ScrollAnimItem.defaultProps = {
@@ -153,6 +156,7 @@ ScrollAnimItem.defaultProps = {
   moveNext: () => {},
   movePrev: () => {},
   horizontal: false,
+  shown: false,
 };
 
 export default ScrollAnimItem;

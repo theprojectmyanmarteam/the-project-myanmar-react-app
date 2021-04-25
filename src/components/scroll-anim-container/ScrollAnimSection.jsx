@@ -30,8 +30,7 @@ const ScrollAnimSection = ({
     setTranslate((t) => Math.min(t + amount, amount));
   };
 
-  // allows parent to show this component
-  // currently you can only hide this element from within itself
+  // allows parent to show this component by changing to the visible prop
   useEffect(() => {
     if (visible) {
       // if visible is set to true
@@ -81,6 +80,7 @@ const ScrollAnimSection = ({
       moveNext: nextSection,
       movePrev: prevSection,
       horizontal,
+      shown: showSection,
     };
     if (first) {
       props.prevButton = { show: false };
