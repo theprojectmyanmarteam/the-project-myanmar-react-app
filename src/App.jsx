@@ -16,18 +16,18 @@ function App() {
           content={<Title />}
           nextButton={{
             show: false,
-            label: 'Scroll down to start',
-            scrollable: true,
+            label: 'Press down to start',
+            scrollable: false,
           }}
         />
         <ScrollAnimItem
           content={<Mingalarbar />}
-          nextButton={{
+          prevButton={{
             show: false,
             scrollable: true,
           }}
-          prevButton={{
-            show: false,
+          nextButton={{
+            show: true,
             scrollable: true,
           }}
         />
