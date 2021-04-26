@@ -79,7 +79,6 @@ const ScrollAnimItem = ({
           showNext: () => setShowNext(true),
           movePrev,
           showPrev: () => setShowPrev(true),
-          // shown,
         },
         shown,
       })}
