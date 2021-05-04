@@ -1,0 +1,19 @@
+.timeline-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.amcharts-AxisLabelCircular {
+  font-size: 12px;
+}
+
+.amcharts-AxisLabelCircular:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.amcharts-AmChartsLogo {
+  display: none;
+}

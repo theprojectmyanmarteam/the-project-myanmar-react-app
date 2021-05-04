@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './QuizQuestion.css';
 import Button from 'react-bootstrap/Button';
 
-const QuizQuestion = ({ controllers }) => {
+const QuizQuestion = ({ controllers, onRightAnswer }) => {
   return (
     <div className="quiz-question-container">
       <div className="quiz-question-title h4">
@@ -24,7 +24,11 @@ const QuizQuestion = ({ controllers }) => {
         >
           Mandalay
         </Button>
-        <Button variant="outline-light" className="quiz-answer-btn">
+        <Button
+          variant="outline-light"
+          className="quiz-answer-btn"
+          onClick={onRightAnswer}
+        >
           Naypyidaw
         </Button>
       </div>
@@ -39,10 +43,12 @@ QuizQuestion.propTypes = {
     moveNext: PropTypes.func,
     movePrev: PropTypes.func,
   }),
+  onRightAnswer: PropTypes.func, // function called on right answer
 };
 
 QuizQuestion.defaultProps = {
   controllers: {},
+  onRightAnswer: () => {},
 };
 
 export default QuizQuestion;
