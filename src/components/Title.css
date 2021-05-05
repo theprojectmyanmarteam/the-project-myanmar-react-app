@@ -1,40 +1,10 @@
-#splash-container {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-#splash-content {
+.title-content {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   position: relative;
   height: 100%;
-}
-
-#down-div {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-}
-
-#down-text {
-  color: #fcfcfc;
-  font-size: 20px;
-  margin-bottom: 0px;
-}
-
-#down-button {
-  background-color: #0f0f0f;
-  width: 100%;
-  border: none;
-}
-
-#down-button:hover,
-#down-button:focus {
-  background-color: #212529;
 }
 
 .title {

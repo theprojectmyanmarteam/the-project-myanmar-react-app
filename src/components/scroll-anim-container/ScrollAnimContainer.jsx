@@ -20,11 +20,11 @@ const ScrollAnimContainer = ({ children, horizontal }) => {
 
   return (
     <div className="scroll-anim-container">
-      {children.map((elem, idx) => {
+      {childrenMap.map((child, idx) => {
         return (
           <ScrollAnimSection
-            key={childrenMap[idx].id}
-            content={childrenMap[idx].elem}
+            key={child.id}
+            item={child.elem}
             onNext={() => {
               if (idx + 1 < childrenMap.length) {
                 setVisibilityOfChildAt(idx + 1, true);
@@ -37,12 +37,10 @@ const ScrollAnimContainer = ({ children, horizontal }) => {
                 setVisibilityOfChildAt(idx, false);
               }
             }}
-            visible={childrenMap[idx].show}
-            showUpButton={idx > 0}
-            showDownButton={idx < childrenMap.length - 1}
-            showLeftButton={idx > 0}
-            showRightButton={idx < childrenMap.length - 1}
+            visible={child.show}
             horizontal={horizontal}
+            first={idx === 0}
+            last={idx === childrenMap.length - 1}
           />
         );
       })}

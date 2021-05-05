@@ -1,0 +1,39 @@
+.quiz-question-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+}
+
+.quiz-question-title {
+  margin-bottom: 100px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.quiz-answer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  height: 280px;
+  width: 220px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.quiz-answer-btn {
+  flex: 1;
+  color: #fcfcfc;
+  border-color: #fcfcfc;
+  border-width: 1;
+  margin: 10px;
+  width: 100%;
+  font-size: 20px;
+}
+
+.quiz-answer-btn:hover {
+  background-color: #fcfcfc;
+}
