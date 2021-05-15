@@ -6,6 +6,7 @@ import Title from './components/Title';
 import Mingalarbar from './components/mingalarbar/Mingalarbar';
 import Quiz from './components/quiz/Quiz';
 import HistoryOrCurrent from './components/history-or-current/HistoryOrCurrent';
+import GroupsInTheCoup from './components/groups-in-the-coup/GroupsInTheCoup';
 import ScrollAnimContainer from './components/scroll-anim-container/ScrollAnimContainer';
 import ScrollAnimItem from './components/scroll-anim-container/ScrollAnimItem';
 
@@ -44,6 +45,13 @@ function App() {
         />
         <ScrollAnimItem
           content={<HistoryOrCurrent />}
+          prevButton={{
+            show: false,
+            scrollable: true,
+          }}
+        />
+        <ScrollAnimItem
+          content={<GroupsInTheCoup />}
           prevButton={{
             show: false,
             scrollable: true,
