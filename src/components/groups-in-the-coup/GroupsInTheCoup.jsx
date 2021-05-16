@@ -251,13 +251,28 @@ const GroupsInTheCoup = () => {
       // Math.min(45, number here);
       // combined below...
       // half the width of the node, between 14 and 45.
-      const fontSize = Math.max(
-        14,
-        Math.min(45, Math.ceil(event.target.measuredWidth * 0.5))
+      //   const radius = event.target.measuredWidth / 2;
+      //   const fontSize = Math.max(
+      //     14,
+      //     // Math.ceil(Math.PI * radius ** 2),
+      //     // Math.min(45, Math.ceil(Math.PI * radius ** 2) * 0.5)
+      //     Math.min(45, Math.ceil(event.target.measuredWidth * 0.5))
+      //   );
+      //   series.nodes.template.children.each((child) => {
+      //     child.
+      //   })
+      // eslint-disable-next-line no-console
+      console.log('measuredWidth: ', event.target.circle);
+      const fontSize = Math.min(
+        45,
+        Math.ceil(event.target.circle.radius * 0.25)
       );
+      // eslint-disable-next-line no-console
+      console.log('fontSize: ', fontSize);
       // eslint-disable-next-line no-param-reassign
       event.target.fontSize = fontSize;
     });
+    series.nodes.template.label.wrap = true;
 
     return () => {
       chart.dispose();
