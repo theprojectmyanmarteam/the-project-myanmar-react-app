@@ -5,6 +5,11 @@
   overflow: hidden;
 }
 
+.chart-container {
+  height: 100%;
+  width: 100%;
+}
+
 .amcharts-AxisLabelCircular {
   font-size: 12px;
 }
@@ -12,6 +17,10 @@
 .amcharts-AxisLabelCircular:hover {
   cursor: pointer;
   font-weight: bold;
+}
+
+.amcharts-era-bar {
+  cursor: pointer;
 }
 
 .amcharts-AmChartsLogo {
