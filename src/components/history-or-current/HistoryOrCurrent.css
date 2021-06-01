@@ -1,0 +1,40 @@
+.history-or-current-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .history-or-current-text {
+    margin-bottom: 100px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  
+  .history-or-current-choice {
+    display: flex;
+    /* flex-direction: row; */
+    align-items: center;
+    justify-content: center;
+    flex-flow: row nowrap;
+    height: 80px;
+    width: 100%;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  
+  .history-or-current-btn {
+    /* flex: 1; */
+    color: #fcfcfc;
+    border-color: #fcfcfc;
+    border-width: 1;
+    margin: 10px;
+    width: 200px;
+    font-size: 20px;
+  }
+  
+  .history-or-current-btn:hover {
+    background-color: #fcfcfc;
+  }

@@ -39,7 +39,7 @@ const ScrollAnimItem = ({
     opacity: showNext ? 1 : 0,
     delay: showNext ? SHOW_BUTTON_DELAY_MS : 0,
     config: config.molasses,
-    onRest: () => setNextScrollEnabled(true),
+    onRest: () => setNextScrollEnabled(nextButton.scrollable), // setting to nextButton.scrollable so that component is scrollable to the next only if specified in the props
   });
 
   // animation for prev button
@@ -63,6 +63,10 @@ const ScrollAnimItem = ({
       if (nextScrollEnabled && !horizontal) {
         moveNext();
       }
+    }
+    // allow to scroll back to the top; not allowing left scroll
+    else if (prevScrollEnabled && !horizontal) {
+      movePrev();
     }
   };
 
