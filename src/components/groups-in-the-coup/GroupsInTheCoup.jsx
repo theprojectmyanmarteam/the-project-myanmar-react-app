@@ -25,7 +25,7 @@ const GroupsInTheCoup = () => {
     // Set data
     series.data = [
       {
-        name: 'The Media',
+        name: 'TEXT', // 'The Media',
         description:
           'Different types of media that play a big role in the Coup',
         collapsed: true,
@@ -45,7 +45,7 @@ const GroupsInTheCoup = () => {
         ],
       },
       {
-        name: 'Pre-Coup Political Parties',
+        name: 'TEXT', // 'Pre-Coup Political Parties',
         collapsed: true,
         children: [
           {
@@ -67,7 +67,7 @@ const GroupsInTheCoup = () => {
         ],
       },
       {
-        name: 'Tatmadaw',
+        name: 'TEXT', // 'Tatmadaw',
         collapsed: true,
         children: [
           {
@@ -77,7 +77,7 @@ const GroupsInTheCoup = () => {
         ],
       },
       {
-        name: 'The People',
+        name: 'TEXT', // 'The People',
         collapsed: true,
         children: [
           {
@@ -97,7 +97,7 @@ const GroupsInTheCoup = () => {
         ],
       },
       {
-        name: 'Representatives of the People',
+        name: 'TEXT', // 'Representatives of the People',
         collapsed: true,
         children: [
           {
@@ -115,7 +115,7 @@ const GroupsInTheCoup = () => {
         ],
       },
       {
-        name: 'EAOs',
+        name: 'TEXT', // 'EAOs',
         collapsed: true,
         children: [
           {
@@ -133,19 +133,22 @@ const GroupsInTheCoup = () => {
         ],
       },
       {
-        name: 'Myanmar and the World',
+        name: 'TEXT', // 'Myanmar and the World',
         collapsed: true,
+        hasModal: false,
         children: [
           {
             name: 'ASEAN',
             description: 'Association of Southeast Asian Nations',
             collapsed: true,
+            hasModal: false,
             children: [
               {
                 name: 'Myanmar',
                 description:
                   'The place of the Coup. This is where citizens are being tortured for supporting democracy',
                 value: 400,
+                hasModal: true,
               },
               {
                 name: 'Brunei',
@@ -230,6 +233,7 @@ const GroupsInTheCoup = () => {
     series.dataFields.name = 'name';
     series.dataFields.children = 'children';
     series.dataFields.collapsed = 'collapsed';
+    series.dataFields.hasModal = 'hasModal';
 
     // Add labels
     series.nodes.template.label.text = '{name}';
@@ -245,22 +249,6 @@ const GroupsInTheCoup = () => {
     // Custom font size for each node
     // source: https://stackoverflow.com/questions/56868925/amchart-4-force-directed-tree-dynamic-font-size
     series.nodes.template.events.on('ready', (event) => {
-      // Minimum font size 14:
-      // Math.max(14, number here);
-      // Maximum font size 45:
-      // Math.min(45, number here);
-      // combined below...
-      // half the width of the node, between 14 and 45.
-      //   const radius = event.target.measuredWidth / 2;
-      //   const fontSize = Math.max(
-      //     14,
-      //     // Math.ceil(Math.PI * radius ** 2),
-      //     // Math.min(45, Math.ceil(Math.PI * radius ** 2) * 0.5)
-      //     Math.min(45, Math.ceil(event.target.measuredWidth * 0.5))
-      //   );
-      //   series.nodes.template.children.each((child) => {
-      //     child.
-      //   })
       // eslint-disable-next-line no-console
       console.log('measuredWidth: ', event.target.circle);
       const fontSize = Math.min(
@@ -273,6 +261,38 @@ const GroupsInTheCoup = () => {
       event.target.fontSize = fontSize;
     });
     series.nodes.template.label.wrap = true;
+
+    // series.nodes.template.adapter
+    // series.nodes.template.add('fontSize', (text, target, key) => {
+    //   // eslint-disable-next-line no-console
+    //   console.log('text: ', text);
+    //   // eslint-disable-next-line no-console
+    //   console.log('target: ', target);
+    //   // eslint-disable-next-line no-console
+    //   console.log('key: ', key);
+    //   return `>>> ${text} <<<`;
+    // });
+
+    series.nodes.template.events.on('hit', (event) => {
+      if (event.target.dataItem) {
+        // eslint-disable-next-line no-console
+        console.log(`Level ${event.target.dataItem.level}`);
+        // eslint-disable-next-line default-case
+        // switch (event.target.dataItem.level) {
+        //   case 0:
+        //     // eslint-disable-next-line no-console
+        //     console.log(`Level ${event.target.dataItem.level}`);
+        //   // eslint-disable-next-line no-fallthrough
+        //   case 1:
+        //     // eslint-disable-next-line no-console
+        //     console.log(`Level ${event.target.dataItem.level}`);
+        //   // eslint-disable-next-line no-fallthrough
+        //   case 2:
+        //     // eslint-disable-next-line no-console
+        //     console.log(`Level ${event.target.dataItem.level}`);
+        // }
+      }
+    });
 
     return () => {
       chart.dispose();
