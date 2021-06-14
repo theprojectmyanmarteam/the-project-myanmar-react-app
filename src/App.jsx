@@ -8,6 +8,7 @@ import Quiz from './components/quiz/Quiz';
 import HistoryOrCurrent from './components/history-or-current/HistoryOrCurrent';
 import ScrollAnimContainer from './components/scroll-anim-container/ScrollAnimContainer';
 import ScrollAnimItem from './components/scroll-anim-container/ScrollAnimItem';
+import Map from './components/map/Map';
 
 function App() {
   return (
@@ -15,6 +16,13 @@ function App() {
       <ScrollAnimContainer>
         <ScrollAnimItem
           content={<Title />}
+          nextButton={{
+            show: false,
+            scrollable: false,
+          }}
+        />
+        <ScrollAnimItem
+          content={<Map />}
           nextButton={{
             show: false,
             label: 'Press down to start',
