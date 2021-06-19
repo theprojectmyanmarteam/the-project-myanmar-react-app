@@ -1,5 +1,5 @@
 // import React, { useRef, useLayoutEffect } from 'react';
-import React, { useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import * as am4core from '@amcharts/amcharts4/core';
 // import * as am4charts from '@amcharts/amcharts4/charts';
 // eslint-disable-next-line camelcase
@@ -7,9 +7,18 @@ import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDire
 // eslint-disable-next-line camelcase
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 
+import EventModal from '../EventModal';
+
 am4core.useTheme(am4themes_animated);
 
 const GroupsInTheCoup = () => {
+  const [show, setShow] = useState(false);
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventContent, setEventContent] = useState('');
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   useLayoutEffect(() => {
     // Create chart
     const chart = am4core.create(
@@ -135,24 +144,28 @@ const GroupsInTheCoup = () => {
       {
         name: 'TEXT', // 'Myanmar and the World',
         collapsed: true,
-        hasModal: false,
+        hasContent: false,
         children: [
           {
             name: 'ASEAN',
             description: 'Association of Southeast Asian Nations',
             collapsed: true,
-            hasModal: false,
+            hasContent: false,
             children: [
               {
                 name: 'Myanmar',
                 description:
                   'The place of the Coup. This is where citizens are being tortured for supporting democracy',
                 value: 400,
-                hasModal: true,
+                hasContent: true,
+                content:
+                  'Myanmar is located in Southeast Asia. It is a beautiful country... before the coup',
               },
               {
                 name: 'Brunei',
                 value: 150,
+                hasContent: false,
+                content: null,
               },
               {
                 name: 'Cambodia',
@@ -233,7 +246,8 @@ const GroupsInTheCoup = () => {
     series.dataFields.name = 'name';
     series.dataFields.children = 'children';
     series.dataFields.collapsed = 'collapsed';
-    series.dataFields.hasModal = 'hasModal';
+    series.dataFields.hasContent = 'hasContent';
+    series.dataFields.content = 'content';
 
     // Add labels
     series.nodes.template.label.text = '{name}';
@@ -249,16 +263,24 @@ const GroupsInTheCoup = () => {
     // Custom font size for each node
     // source: https://stackoverflow.com/questions/56868925/amchart-4-force-directed-tree-dynamic-font-size
     series.nodes.template.events.on('ready', (event) => {
-      // eslint-disable-next-line no-console
-      console.log('measuredWidth: ', event.target.circle);
       const fontSize = Math.min(
         45,
         Math.ceil(event.target.circle.radius * 0.25)
       );
-      // eslint-disable-next-line no-console
-      console.log('fontSize: ', fontSize);
       // eslint-disable-next-line no-param-reassign
       event.target.fontSize = fontSize;
+      if (event.target.dataItem.name === 'ASEAN') {
+        // eslint-disable-next-line no-console
+        console.log('ASEAN!!');
+        // eslint-disable-next-line no-console
+        console.log('ASEAN Size: ', event.target.fontSize);
+      }
+      if (event.target.dataItem.name === 'TEXT') {
+        // eslint-disable-next-line no-console
+        console.log('TEXT!!');
+        // eslint-disable-next-line no-console
+        console.log('TEXT Size: ', event.target.fontSize);
+      }
     });
     series.nodes.template.label.wrap = true;
 
@@ -274,9 +296,10 @@ const GroupsInTheCoup = () => {
     // });
 
     series.nodes.template.events.on('hit', (event) => {
-      if (event.target.dataItem) {
-        // eslint-disable-next-line no-console
-        console.log(`Level ${event.target.dataItem.level}`);
+      if (event.target.dataItem && event.target.dataItem.hasContent) {
+        setEventTitle(event.target.dataItem.name);
+        setEventContent(event.target.dataItem.content);
+        handleShow();
         // eslint-disable-next-line default-case
         // switch (event.target.dataItem.level) {
         //   case 0:
@@ -299,7 +322,16 @@ const GroupsInTheCoup = () => {
     };
   }, []);
 
-  return <div id="chartdiv" style={{ width: '100%', height: '100%' }} />;
+  return (
+    <div id="chartdiv" style={{ width: '100%', height: '100%' }}>
+      <EventModal
+        title={eventTitle}
+        content={eventContent}
+        show={show}
+        onHide={handleClose}
+      />
+    </div>
+  );
 };
 
 export default GroupsInTheCoup;

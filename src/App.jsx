@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Title from './components/Title';
 import Mingalarbar from './components/mingalarbar/Mingalarbar';
 import Quiz from './components/quiz/Quiz';
+import Timeline from './components/Timeline';
 import HistoryOrCurrent from './components/history-or-current/HistoryOrCurrent';
 import GroupsInTheCoup from './components/groups-in-the-coup/GroupsInTheCoup';
 import ScrollAnimContainer from './components/scroll-anim-container/ScrollAnimContainer';
@@ -40,7 +41,6 @@ function App() {
           }}
           nextButton={{
             show: false,
-            scrollable: true,
           }}
         />
         <ScrollAnimItem
@@ -52,6 +52,13 @@ function App() {
         />
         <ScrollAnimItem
           content={<GroupsInTheCoup />}
+          prevButton={{
+            show: false,
+            scrollable: true,
+          }}
+        />
+        <ScrollAnimItem
+          content={<Timeline />}
           prevButton={{
             show: false,
             scrollable: true,

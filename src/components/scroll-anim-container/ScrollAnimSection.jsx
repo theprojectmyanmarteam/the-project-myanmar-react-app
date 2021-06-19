@@ -65,6 +65,7 @@ const ScrollAnimSection = ({
       : `translateY(${translate}px)`,
     opacity: showSection ? 1 : 0,
     config: config.slow,
+    // uncomment to render only on show
     display: renderSection ? 'flex' : 'none',
     onRest: () => {
       // After the animation is done, if the element is currently not showing,
