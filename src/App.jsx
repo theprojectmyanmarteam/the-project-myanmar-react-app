@@ -25,7 +25,6 @@ function App() {
           content={<Map />}
           nextButton={{
             show: false,
-            label: 'Press down to start',
             scrollable: false,
           }}
         />

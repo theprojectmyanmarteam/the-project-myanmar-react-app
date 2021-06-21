@@ -25,25 +25,18 @@ var continents = {
 
 const Map = ({ onHide, visible }) => {
   const chart = useRef(null);
-
-  const [showMap, setShowMap] = useState(visible);
-  const [renderMap, setRenderMap] = useState(true);
-
   const mapAnim = useSpring({
     opacity: visible ? 1 : 0,
     display: visible ? 'flex' : 'none',
     config: config.slow,
   });
-
-  //const chart = useRef(null);
-
   useEffect(() => {
-    if (!visible) {
-      onHide();
-    } else {
-      setRenderMap(true);
-    }
-    setShowMap(visible);
+    // if (!visible) {
+    //   onHide();
+    // } else {
+    //   setRenderMap(true);
+    // }
+    // setShowMap(visible);
 
     /* Chart code */
 
@@ -87,8 +80,17 @@ const Map = ({ onHide, visible }) => {
     countryPolygon.nonScalingStroke = true;
     countryPolygon.strokeOpacity = 0.5;
     countryPolygon.fill = am4core.color('#eee');
+  
+    countryPolygon.events.on('ready', function (ev) {
+      console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
+      //x.zoomLevel = 8.75;
+      ev.target.series.chart.zoomToMapObject(ev.target, 8.75, true);
+      x.seriesContainer.draggable = false;
+      x.seriesContainer.resizable = false;
+    });
 
     polygonTemplate.events.on('hit', function (ev) {
+      console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
       if (lastSelected) {
         // This line serves multiple purposes:
         // 1. Clicking a country twice actually de-activates, the line below
@@ -97,25 +99,28 @@ const Map = ({ onHide, visible }) => {
         // 2. Previously activated countries should be de-activated.+-
         lastSelected.isActive = false;
       }
-      ev.target.series.chart.zoomToMapObject(ev.target);
+      //ev.target.series.chart.zoomToMapObject(ev.target);
       if (lastSelected !== ev.target) {
         lastSelected = ev.target;
       }
       if (ev.target.dataItem._dataContext.name === 'Myanmar') {
+        ev.target.series.chart.zoomToMapObject(ev.target, 8.75, true);
+        console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
         console.log('clicked on myanmar');
         //ev.target.isActive = !ev.target.isActive;
         var hs = countryPolygon.states.create('hover');
         hs.properties.fill = x.colors.getIndex(9);
         var map = ev.target.dataItem.dataContext.map;
+
         if (map) {
           ev.target.isHover = false;
-          countrySeries.geodataSource.url =
-            'https://cdn.amcharts.com/lib/4/geodata/json/' + map + '.json';
-
+          countrySeries.geodataSource.url = 'https://cdn.amcharts.com/lib/4/geodata/json/' + map + '.json';
           countrySeries.geodataSource.load();
           back.show();
           toggleMMOnlyStyle();
           x.seriesContainer.draggable = false;
+          x.zoomLevel = 8.75
+          console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
         }
       } else {
         console.log('Did not click on myanmar');
@@ -178,10 +183,12 @@ const Map = ({ onHide, visible }) => {
     back.events.on('hit', function (ev) {
       x.seriesContainer.draggable = true;
       polygonSeries.show();
-      x.goHome();
+      x.zoomToRectangle(83.5995, 180, -55.5214, -180, 1, true);
+      //x.goHome();
       countrySeries.hide();
       back.hide();
       toggleMMOnlyStyle();
+      
     });
 
     homeButton.icon = new am4core.Sprite();
@@ -192,16 +199,24 @@ const Map = ({ onHide, visible }) => {
     homeButton.marginBottom = 10;
     homeButton.parent = x.zoomControl;
     //homeButton.insertBefore(x.zoomControl.plusButton);
-
     chart.current = x;
 
     function toggleMMOnlyStyle() {
+      //setShowMyanmarMap(true);
       console.log('Changed Maps');
-      let div = document.getElementById('mapdiv');
-      if (div.classList.contains('myanmar-only')) {
-        div.classList.remove('myanmar-only');
+
+      let leftDiv = document.getElementById('mapdiv');
+      if (leftDiv.classList.contains('myanmar-only')) {
+        leftDiv.classList.remove('myanmar-only');
       } else {
-        div.classList.add('myanmar-only');
+        leftDiv.classList.add('myanmar-only');
+      }
+
+      let rightDiv = document.getElementById('map-info-div');
+      if (rightDiv.classList.contains('shown')) {
+        rightDiv.classList.remove('shown');
+      } else {
+        rightDiv.classList.add('shown');
       }
     }
 
@@ -213,7 +228,17 @@ const Map = ({ onHide, visible }) => {
   return (
     <animated.div id="splash-container" style={mapAnim}>
       <div id="mapdiv" className="mapdiv"></div>
+      <div id="map-info-div" className="map-info-div">
+        <h1>Correct! This is Myanmar.</h1>
+        <p>
+        Myanmar, also called Burma, is a country located in the western portion of mainland Southeast Asia. It is neighbored by China, India, Thailand, Bangladesh, and Laos.
+        </p>
+      </div>
     </animated.div>
+    // <div>
+      
+    // </div>
+    
   );
 };
 
@@ -228,3 +253,4 @@ Map.defaultProps = {
 };
 
 export default Map;
+

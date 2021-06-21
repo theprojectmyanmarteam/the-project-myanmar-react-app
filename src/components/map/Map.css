@@ -1,8 +1,18 @@
 .mapdiv {
     width: 100vw;
-    height: 100vh;
+    height: 85vh;
+}
+
+.map-info-div {
+    display: none;
+    width: 50vw;
+    height: 85vh;
+}
+
+.shown {
+    display: block;
 }
 
 .myanmar-only {
-
+    width: 50vw;
 }
