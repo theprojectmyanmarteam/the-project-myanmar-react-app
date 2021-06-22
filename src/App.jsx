@@ -23,6 +23,10 @@ function App() {
         />
         <ScrollAnimItem
           content={<Map />}
+          prevButton={{
+            show: false,
+            scrollable: false,
+          }}
           nextButton={{
             show: false,
             scrollable: false,

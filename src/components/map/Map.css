@@ -3,16 +3,25 @@
     height: 85vh;
 }
 
-.map-info-div {
+.map-info-container {
     display: none;
     width: 50vw;
     height: 85vh;
+    padding: 10vh;
 }
 
 .shown {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .myanmar-only {
     width: 50vw;
+}
+
+.map-info-detail {
+
 }

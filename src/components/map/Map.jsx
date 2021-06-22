@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSpring, animated, config } from 'react-spring';
 import './Map.css';
@@ -13,31 +13,26 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 am4core.useTheme(am4themes_animated);
 am4core.addLicense('ch-custom-attribution');
 
-var continents = {
-  AF: 0,
-  AN: 1,
-  AS: 2,
-  EU: 3,
-  NA: 4,
-  OC: 5,
-  SA: 6,
-};
-
-const Map = ({ onHide, visible }) => {
+const Map = ({ visible, controllers }) => {
+  const continents = {
+    AF: 0,
+    AN: 1,
+    AS: 2,
+    EU: 3,
+    NA: 4,
+    OC: 5,
+    SA: 6,
+  };
   const chart = useRef(null);
   const mapAnim = useSpring({
     opacity: visible ? 1 : 0,
     display: visible ? 'flex' : 'none',
     config: config.slow,
   });
+  const reachedSucess = () => {
+    controllers.showNext();
+  }
   useEffect(() => {
-    // if (!visible) {
-    //   onHide();
-    // } else {
-    //   setRenderMap(true);
-    // }
-    // setShowMap(visible);
-
     /* Chart code */
 
     /* Create map instance */
@@ -63,7 +58,9 @@ const Map = ({ onHide, visible }) => {
     //polygonTemplate.tooltipText = '{name}';
     polygonTemplate.nonScalingStroke = true;
     polygonTemplate.strokeOpacity = 0.5;
-    polygonTemplate.fill = x.colors.getIndex(0);
+    //polygonTemplate.fill = x.colors.getIndex(0);
+    polygonTemplate.fill = am4core.color("#ffba19")
+    console.log(x.colors);
     let lastSelected;
 
     // Create country specific series (but hide it for now)
@@ -82,11 +79,12 @@ const Map = ({ onHide, visible }) => {
     countryPolygon.fill = am4core.color('#eee');
   
     countryPolygon.events.on('ready', function (ev) {
-      console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
+      //console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
       //x.zoomLevel = 8.75;
-      ev.target.series.chart.zoomToMapObject(ev.target, 8.75, true);
+      ev.target.series.chart.zoomToMapObject(ev.target, 10.00, true);
       x.seriesContainer.draggable = false;
       x.seriesContainer.resizable = false;
+      x.chartContainer.wheelable = false;
     });
 
     polygonTemplate.events.on('hit', function (ev) {
@@ -104,26 +102,24 @@ const Map = ({ onHide, visible }) => {
         lastSelected = ev.target;
       }
       if (ev.target.dataItem._dataContext.name === 'Myanmar') {
-        ev.target.series.chart.zoomToMapObject(ev.target, 8.75, true);
-        console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
-        console.log('clicked on myanmar');
+        ev.target.series.chart.zoomToMapObject(ev.target, 10.00, true);
         //ev.target.isActive = !ev.target.isActive;
         var hs = countryPolygon.states.create('hover');
-        hs.properties.fill = x.colors.getIndex(9);
+        //hs.properties.fill = x.colors.getIndex(9);
+        hs.properties.fill = am4core.color('#ffba19');
         var map = ev.target.dataItem.dataContext.map;
 
         if (map) {
           ev.target.isHover = false;
           countrySeries.geodataSource.url = 'https://cdn.amcharts.com/lib/4/geodata/json/' + map + '.json';
           countrySeries.geodataSource.load();
-          back.show();
+          //back.show(); // Uncomment to show button to go back to world map
           toggleMMOnlyStyle();
           x.seriesContainer.draggable = false;
-          x.zoomLevel = 8.75
-          console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
+          x.zoomLevel = 10.00;
         }
+        reachedSucess();
       } else {
-        console.log('Did not click on myanmar');
         x.goHome();
       }
     });
@@ -176,20 +172,19 @@ const Map = ({ onHide, visible }) => {
       x.goHome();
     });
 
-    // Add zoomout button
-    var back = x.createChild(am4core.ZoomOutButton);
-    back.align = 'right';
-    back.hide();
-    back.events.on('hit', function (ev) {
-      x.seriesContainer.draggable = true;
-      polygonSeries.show();
-      x.zoomToRectangle(83.5995, 180, -55.5214, -180, 1, true);
-      //x.goHome();
-      countrySeries.hide();
-      back.hide();
-      toggleMMOnlyStyle();
-      
-    });
+    // Add zoomout button  // Uncomment to show button to go back to world map
+    // var back = x.createChild(am4core.ZoomOutButton);
+    // back.align = 'right';
+    // back.hide();
+    // back.events.on('hit', function (ev) {
+    //   x.seriesContainer.draggable = true;
+    //   polygonSeries.show();
+    //   x.zoomToRectangle(83.5995, 180, -55.5214, -180, 1, true);
+    //   //x.goHome();
+    //   countrySeries.hide();
+    //   back.hide();
+    //   toggleMMOnlyStyle();
+    // });
 
     homeButton.icon = new am4core.Sprite();
     homeButton.padding(7, 5, 7, 5);
@@ -202,22 +197,11 @@ const Map = ({ onHide, visible }) => {
     chart.current = x;
 
     function toggleMMOnlyStyle() {
-      //setShowMyanmarMap(true);
-      console.log('Changed Maps');
-
-      let leftDiv = document.getElementById('mapdiv');
-      if (leftDiv.classList.contains('myanmar-only')) {
-        leftDiv.classList.remove('myanmar-only');
-      } else {
-        leftDiv.classList.add('myanmar-only');
-      }
-
-      let rightDiv = document.getElementById('map-info-div');
-      if (rightDiv.classList.contains('shown')) {
-        rightDiv.classList.remove('shown');
-      } else {
-        rightDiv.classList.add('shown');
-      }
+      const leftDiv = document.getElementById('mapdiv');
+      leftDiv.classList.contains('myanmar-only') ? leftDiv.classList.remove('myanmar-only') : leftDiv.classList.add('myanmar-only');
+      
+      const rightDiv = document.getElementById('map-info-container');
+      rightDiv.classList.contains('shown') ? rightDiv.classList.remove('shown') : rightDiv.classList.add('shown');
     }
 
     return () => {
@@ -228,23 +212,25 @@ const Map = ({ onHide, visible }) => {
   return (
     <animated.div id="splash-container" style={mapAnim}>
       <div id="mapdiv" className="mapdiv"></div>
-      <div id="map-info-div" className="map-info-div">
-        <h1>Correct! This is Myanmar.</h1>
-        <p>
-        Myanmar, also called Burma, is a country located in the western portion of mainland Southeast Asia. It is neighbored by China, India, Thailand, Bangladesh, and Laos.
-        </p>
+      <div id="map-info-container" className="map-info-container">
+        <div id="map-info-detail" className="map-info-detail">
+          <h1>Correct! This is Myanmar.</h1>
+          <p>
+          Myanmar, also called Burma, is a country located in the western portion of mainland Southeast Asia. Myanmar is bordered by Bangladesh and India to its northwest, China to its northeast, Laos and Thailand to its east and southeast, and the Andaman Sea and the Bay of Bengal to its south and southwest. Myanmar is the largest country in Mainland Southeast Asia and the 10th largest in Asia by area with a population of 54.76 million. It is divided into seven states (ပြည်နယ်) and seven regions (တိုင်းဒေသကြီး) and is roughly about the size of Texas.
+          </p>
+        </div>
+        
       </div>
     </animated.div>
-    // <div>
-      
-    // </div>
-    
   );
 };
 
 Map.propTypes = {
-  onHide: PropTypes.func,
-  visible: PropTypes.bool,
+  controllers: PropTypes.shape({
+    onHide: PropTypes.func,
+    visible: PropTypes.bool,
+    showNext: PropTypes.func,
+  }),
 };
 
 Map.defaultProps = {
