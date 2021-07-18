@@ -17,6 +17,8 @@ const GroupsInTheCoup = () => {
   const [show, setShow] = useState(false);
   const [eventTitle, setEventTitle] = useState('');
   const [eventContent, setEventContent] = useState('');
+  //   const [eventContentList, setEventContentList] = useState([]);
+  //   const [eventIsContentList, setEventIsContentList] = useState(false);
   //   const showRef = useRef(false);
   //   const eventTitleRef = useRef('');
   //   const eventContentRef = useRef('');
@@ -63,8 +65,6 @@ const GroupsInTheCoup = () => {
   // useEffect for when 'data' is updated
   // 'data' is the data used in amCharts ForceDirectedSeries fetched from MongoDB
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('HERE: ', data);
     // Create chart
     const chart = am4core.create(
       'chartdiv',
@@ -82,11 +82,15 @@ const GroupsInTheCoup = () => {
     series.dataFields.collapsed = 'collapsed';
     series.dataFields.hasContent = 'hasContent';
     series.dataFields.content = 'content';
+    series.dataFields.contentList = 'contentList';
+    series.dataFields.isContentList = 'isContentList';
 
     // Add labels
     series.nodes.template.label.text = '{name}';
     // series.fontSize = 20;
-    series.minRadius = 30;
+    // series.minRadius = 30;
+    // series.maxRadius = 80;
+    series.minRadius = 80;
     series.maxRadius = 80;
 
     // Tool tip settings
@@ -97,24 +101,33 @@ const GroupsInTheCoup = () => {
     // Custom font size for each node
     // source: https://stackoverflow.com/questions/56868925/amchart-4-force-directed-tree-dynamic-font-size
     series.nodes.template.events.on('ready', (event) => {
+      //   let tempRadius = event.target.circle.radius;
+      //   if (typeof event.target.circle.radius !== 'number') {
+      //     tempRadius = series.minRadius;
+      //   }
+
       const fontSize = Math.min(
         45,
-        Math.ceil(event.target.circle.radius * 0.25)
+        Math.ceil(event.target.circle.radius * 0.23)
+        // Math.ceil(tempRadius * 0.25)
       );
       // eslint-disable-next-line no-param-reassign
       event.target.fontSize = fontSize;
+      // eslint-disable-next-line no-param-reassign
+      event.target.label.fontSize = fontSize;
     });
     series.nodes.template.label.wrap = true;
 
     series.nodes.template.events.on('hit', (event) => {
       if (event.target.dataItem && event.target.dataItem.hasContent) {
         setEventTitle(event.target.dataItem.name);
-        // eslint-disable-next-line no-console
-        // console.log('eventTitleRef: ', eventTitleRef.current);
-        // eventTitleRef.current = event.target.dataItem.name;
-        setEventContent(event.target.dataItem.content);
-        // eslint-disable-next-line no-console
-        // console.log('eventContentRef: ', eventContentRef.current);
+        if (event.target.dataItem.isContentList) {
+          setEventContent(event.target.dataItem.contentList);
+          //   setEventContentList(event.target.dataItem.contentList);
+          //   setEventIsContentList(true);
+        } else {
+          setEventContent(event.target.dataItem.content);
+        }
         // eventContentRef.current = event.target.dataItem.content;
         handleShow();
       }
@@ -129,6 +142,8 @@ const GroupsInTheCoup = () => {
       <EventModal
         title={eventTitle}
         content={eventContent}
+        // contentList={eventContentList}
+        // isContentList={eventIsContentList}
         show={show}
         onHide={handleClose}
       />
