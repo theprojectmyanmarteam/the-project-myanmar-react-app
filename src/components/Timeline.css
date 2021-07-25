@@ -2,7 +2,29 @@
   height: 100%;
   width: 100%;
   display: flex;
-  overflow: hidden;
+}
+
+.timeline-chart-container {
+  position: relative;
+  height: 100%;
+  width: 60%;
+}
+
+.timeline-circle {
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.timeline-title {
+  font-size: 35px;
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
 }
 
 .chart-container {
@@ -10,8 +32,10 @@
   width: 100%;
 }
 
-.amcharts-AxisLabelCircular {
-  font-size: 12px;
+.side-info-container {
+  height: 100%;
+  width: 40%;
+  background-color: whitesmoke;
 }
 
 .amcharts-AxisLabelCircular:hover {
@@ -24,5 +48,10 @@
 }
 
 .amcharts-AmChartsLogo {
+  display: none;
+}
+
+.amcharts-ZoomOutButton,
+.amcharts-RoundedRectangle {
   display: none;
 }
