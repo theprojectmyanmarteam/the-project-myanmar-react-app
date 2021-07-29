@@ -22,8 +22,8 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           id: idx,
           elem,
           position: idx === 0 ? 0 : 1, // first section starts at center, the rest starts in the front
-          showNextButton: !(idx === 0),
-          showPrevButton: !(idx === 0),
+          nextButtonConfig: { show: !(idx === 0), label: '' },
+          prevButtonConfig: { show: !(idx === 0), label: '' },
         }))
       : [{ id: 0, elem: children, position: 0 }]
   );
@@ -35,14 +35,17 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
   // animation for next button
   // -> fade in
   const nextButtonAnim = useSpring({
-    opacity: childrenList[currChildIdx].showNextButton ? 1 : 0,
+    opacity: childrenList[currChildIdx].nextButtonConfig.show ? 1 : 0,
     delay: 0,
     config: config.slow,
     display: renderNextButton ? 'flex' : 'none',
     onRest: () => {
       // After the animation is done, if the element is currently not showing,
       // set display of the this section to none
-      if (!childrenList[currChildIdx].showNextButton && renderNextButton) {
+      if (
+        !childrenList[currChildIdx].nextButtonConfig.show &&
+        renderNextButton
+      ) {
         setRenderNextButton(false);
       }
     },
@@ -51,24 +54,27 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
   // animation for prev button
   // -> fade in
   const prevButtonAnim = useSpring({
-    opacity: childrenList[currChildIdx].showPrevButton ? 1 : 0,
+    opacity: childrenList[currChildIdx].prevButtonConfig.show ? 1 : 0,
     delay: 0,
     config: config.slow,
     display: renderPrevButton ? 'flex' : 'none',
     onRest: () => {
       // After the animation is done, if the element is currently not showing,
       // set display of the this section to none
-      if (!childrenList[currChildIdx].showPrevButton && renderPrevButton) {
+      if (
+        !childrenList[currChildIdx].prevButtonConfig.show &&
+        renderPrevButton
+      ) {
         setRenderPrevButton(false);
       }
     },
   });
 
   useEffect(() => {
-    if (childrenList[currChildIdx].showNextButton) {
+    if (childrenList[currChildIdx].nextButtonConfig.show) {
       setRenderNextButton(true);
     }
-    if (childrenList[currChildIdx].showPrevButton) {
+    if (childrenList[currChildIdx].prevButtonConfig.show) {
       setRenderPrevButton(true);
     }
   }, [currChildIdx]);
@@ -109,24 +115,24 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
     }
   }, [showChild]);
 
-  const showNextButtonOfChildAt = (childIdx, show) => {
-    if (show && childIdx === currChildIdx) {
+  const setNextButtonConfigOfChildAt = (childIdx, cfg) => {
+    if (cfg.show && childIdx === currChildIdx) {
       setRenderNextButton(true);
     }
     setChildrenList((list) => {
       const newList = list;
-      newList[childIdx].showNextButton = show;
+      newList[childIdx].nextButtonConfig = cfg;
       return [...newList];
     });
   };
 
-  const showPrevButtonOfChildAt = (childIdx, show) => {
-    if (show && childIdx === currChildIdx) {
+  const setPrevButtonConfigOfChildAt = (childIdx, cfg) => {
+    if (cfg.show && childIdx === currChildIdx) {
       setRenderPrevButton(true);
     }
     setChildrenList((list) => {
       const newList = list;
-      newList[childIdx].showPrevButton = show;
+      newList[childIdx].prevButtonConfig = cfg;
       return [...newList];
     });
   };
@@ -171,9 +177,13 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
             horizontal={horizontal}
             first={idx === 0}
             last={idx === childrenList.length - 1}
-            showNextButton={(show) => showNextButtonOfChildAt(idx, show)}
-            showPrevButton={(show) => showPrevButtonOfChildAt(idx, show)}
             setName={(name) => mapNameOfChildAt(idx, name)}
+            setNextButtonConfig={(cfg) =>
+              setNextButtonConfigOfChildAt(idx, cfg)
+            }
+            setPrevButtonConfig={(cfg) =>
+              setPrevButtonConfigOfChildAt(idx, cfg)
+            }
           />
         );
       })}
@@ -186,10 +196,16 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           >
             <BsChevronCompactUp size="2em" />
           </Button>
+          <p className="up-text">
+            {childrenList[currChildIdx].prevButtonConfig.label}
+          </p>
         </animated.div>
       )}
       {!horizontal && (
         <animated.div className="down-div" style={nextButtonAnim}>
+          <p className="down-text">
+            {childrenList[currChildIdx].nextButtonConfig.label}
+          </p>
           <Button
             variant="dark"
             className="nav-button"
@@ -208,10 +224,16 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           >
             <BsChevronCompactLeft size="2em" />
           </Button>
+          <div className="left-text">
+            {childrenList[currChildIdx].prevButtonConfig.label}
+          </div>
         </animated.div>
       )}
       {horizontal && (
         <animated.div className="right-div" style={nextButtonAnim}>
+          <div className="right-text">
+            {childrenList[currChildIdx].nextButtonConfig.label}
+          </div>
           <Button
             variant="dark"
             className="nav-button"

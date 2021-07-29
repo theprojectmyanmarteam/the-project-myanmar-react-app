@@ -7,12 +7,16 @@
 
 .up-div {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   top: 0;
 }
 
 .down-div {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   bottom: 0;
 }
@@ -21,6 +25,7 @@
   color: #fcfcfc;
   font-size: 20px;
   margin-bottom: 0px;
+  width: 100%;
 }
 
 .up-text {
@@ -69,6 +74,7 @@
   background-color: #0f0f0f;
   width: 100%;
   border: none;
+  border-radius: 0;
 }
 
 .nav-button:hover {
