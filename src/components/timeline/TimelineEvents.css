@@ -1,6 +1,6 @@
-.scroll-anim-section {
+.timeline-events-container {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  position: absolute;
+  position: relative;
 }
