@@ -6,6 +6,7 @@ import Quiz from '../quiz/Quiz';
 import ScrollAnimContainer from '../scroll-anim-container/ScrollAnimContainer';
 import ScrollAnimItem from '../scroll-anim-container/ScrollAnimItem';
 import Directory from '../directory/Directory';
+import Map from '../map/Map';
 
 const Home = () => {
   return (
@@ -16,6 +17,17 @@ const Home = () => {
           nextButton={{
             show: false,
             label: 'Press down to start',
+            scrollable: false,
+          }}
+        />
+        <ScrollAnimItem
+          content={<Map />}
+          prevButton={{
+            show: false,
+            scrollable: false,
+          }}
+          nextButton={{
+            show: false,
             scrollable: false,
           }}
         />
