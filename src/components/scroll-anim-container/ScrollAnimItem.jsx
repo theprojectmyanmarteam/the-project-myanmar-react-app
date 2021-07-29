@@ -12,8 +12,8 @@ const ScrollAnimItem = ({
   movePrev,
   horizontal,
   shown,
-  showNextButton,
-  showPrevButton,
+  setNextButtonConfig,
+  setPrevButtonConfig,
   setName,
   name,
 }) => {
@@ -24,16 +24,16 @@ const ScrollAnimItem = ({
   const [prevScrollEnabled, setPrevScrollEnabled] = useState(
     prevButton.scrollable
   );
-  const [showNext, setShowNext] = useState(nextButton.show);
-  const [showPrev, setShowPrev] = useState(prevButton.show);
+  const [nextConfig, setNextConfig] = useState(nextButton);
+  const [prevConfig, setPrevConfig] = useState(prevButton);
 
   useEffect(() => {
-    showNextButton(showNext);
-  }, [showNext]);
+    setNextButtonConfig(nextConfig);
+  }, [nextConfig]);
 
   useEffect(() => {
-    showPrevButton(showPrev);
-  }, [showPrev]);
+    setPrevButtonConfig(prevConfig);
+  }, [prevConfig]);
 
   useEffect(() => {
     if (name) {
@@ -68,9 +68,9 @@ const ScrollAnimItem = ({
         controllers: {
           enableScroll: () => setNextScrollEnabled(true),
           moveNext,
-          showNext: () => setShowNext(true),
+          showNext: () => setNextConfig({ ...nextConfig, ...{ show: true } }),
           movePrev,
-          showPrev: () => setShowPrev(true),
+          showPrev: () => setPrevConfig({ ...prevConfig, ...{ show: true } }),
         },
         shown,
       })}
@@ -95,8 +95,8 @@ ScrollAnimItem.propTypes = {
   movePrev: PropTypes.func,
   horizontal: PropTypes.bool, // orientation of the buttons
   shown: PropTypes.bool, // true if this current element is shown
-  showNextButton: PropTypes.func,
-  showPrevButton: PropTypes.func,
+  setNextButtonConfig: PropTypes.func,
+  setPrevButtonConfig: PropTypes.func,
   setName: PropTypes.func,
 };
 
@@ -122,8 +122,8 @@ ScrollAnimItem.defaultProps = {
   movePrev: () => {},
   horizontal: false,
   shown: false,
-  showNextButton: () => {},
-  showPrevButton: () => {},
+  setNextButtonConfig: () => {},
+  setPrevButtonConfig: () => {},
   setName: () => {},
 };
 

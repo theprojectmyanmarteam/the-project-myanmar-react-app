@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './TimelineEvents.css';
-import ScrollAnimContainer from './scroll-anim-container/ScrollAnimContainer';
-import ScrollAnimItem from './scroll-anim-container/ScrollAnimItem';
+import ScrollAnimContainer from '../scroll-anim-container/ScrollAnimContainer';
+import ScrollAnimItem from '../scroll-anim-container/ScrollAnimItem';
 import EventDetails from './EventDetails';
 
 const TimelineEvents = ({ currEvent, eventData, onChange }) => {

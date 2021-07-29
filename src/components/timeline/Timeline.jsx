@@ -9,21 +9,17 @@ import am4themesDark from '@amcharts/amcharts4/themes/dark';
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 
 import { useSpring, animated, config } from 'react-spring';
-import EventModal from './EventModal';
 import TimelineEvents from './TimelineEvents';
 
 // eslint-disable-next-line no-unused-vars
 const Timeline = ({ controllers }) => {
   const chartDiv = useRef(null);
-  const [show, setShow] = useState(false);
   // const [eventTitle, setEventTitle] = useState('');
   const [currEvent, setCurrEvent] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [rotDeg, setRotDeg] = useState(0);
   const timelineLabels = useRef(null);
   const currLabelElem = useRef(null);
-
-  const handleClose = () => setShow(false);
 
   // eslint-disable-next-line no-unused-vars
   const [eventDates, setEventDates] = useState([
@@ -358,7 +354,6 @@ const Timeline = ({ controllers }) => {
           onChange={onEventChange}
         />
       </div>
-      <EventModal title="" show={show} onHide={handleClose} />
     </div>
   );
 };
