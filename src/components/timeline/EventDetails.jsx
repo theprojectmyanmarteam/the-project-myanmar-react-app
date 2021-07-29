@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './EventDetails.css';
 import Image from 'react-bootstrap/Image';
-import imagePlaceholder from '../resources/image-placeholder.jpeg';
+import imagePlaceholder from '../../resources/image-placeholder.jpeg';
 
 const EventDetails = ({ date, description, title }) => {
   return (
