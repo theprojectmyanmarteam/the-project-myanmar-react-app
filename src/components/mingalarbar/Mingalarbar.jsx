@@ -25,7 +25,7 @@ const Mingalarbar = ({ shown }) => {
         playStatus={playStatus} // {PLAYING, STOPPED, PAUSED}
         playFromPosition={soundPosition} // specify which position to start playing from
         loop // play audio in loop
-        volume={100}
+        volume={20}
       />
       {/* <ReactAudioPlayer src={soundFile} autoPlay loop /> */}
       <p className="h1 title"> Mingalarbar </p>

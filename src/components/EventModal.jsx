@@ -1,31 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './EventModal.css';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const EventModal = ({
-  title,
-  content,
-  // contentList,
-  // isContentList,
-  show,
-  onHide,
-}) => {
+import { truncate } from 'lodash';
+
+const EventModal = ({ title, content, show, onHide }) => {
+  const [readMore, setReadMore] = useState(false); // true = content is shown; false = content is collapsed
+
   let body;
+
+  const toggleReadMore = () => {
+    setReadMore(!readMore);
+  };
+
   if (Array.isArray(content)) {
+    const contentList = content.map((item, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <li key={`item-${index}`}>{item}</li>
+    ));
+    const hiddenContentList = content.slice(0, 2).map((item, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <li key={`item-${index}`}>{item}</li>
+    ));
     body = (
       <div>
-        <ul>
-          {content.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
+        <ul>{readMore ? contentList : hiddenContentList}</ul>
+        {/* only enable 'read more' functionality if array length is greater than 2 */}
+        {content.length > 2 && (
+          <span
+            onClick={toggleReadMore}
+            onKeyDown={toggleReadMore}
+            role="button"
+            tabIndex={0}
+            className="read-or-hide"
+          >
+            {readMore ? '...show less' : '...read more'}
+          </span>
+        )}
       </div>
     );
   } else {
-    body = <p>{content}</p>;
+    body = (
+      <div>
+        <p>
+          {readMore
+            ? content
+            : truncate(content, { length: 150, separator: ' ' })}
+        </p>
+        {/* only enable 'read more' functionality if string length is greater than 150 */}
+        {content.length > 150 && (
+          <span
+            onClick={toggleReadMore}
+            onKeyDown={toggleReadMore}
+            role="button"
+            tabIndex={0}
+            className="read-or-hide"
+          >
+            {readMore ? '...show less' : '...read more'}
+          </span>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -41,7 +79,7 @@ const EventModal = ({
         <Modal.Title id="contained-modal-title-vcenter">{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
+        {/* <h4>Centered Modal</h4> */}
         {body}
       </Modal.Body>
       <Modal.Footer>
@@ -53,10 +91,7 @@ const EventModal = ({
 
 EventModal.propTypes = {
   title: PropTypes.string,
-  content: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  // contentList: PropTypes.array,
-  // isContentList: PropTypes.bool,
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   show: PropTypes.bool,
   onHide: PropTypes.func,
 };
@@ -65,8 +100,6 @@ EventModal.defaultProps = {
   title: 'Event Modal Heading',
   content:
     'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.',
-  // contentList: [],
-  // isContentList: false,
   show: false,
   onHide: () => {},
 };

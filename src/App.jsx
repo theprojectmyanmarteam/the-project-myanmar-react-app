@@ -54,7 +54,7 @@ function App() {
           content={<GroupsInTheCoup />}
           prevButton={{
             show: false,
-            scrollable: true,
+            scrollable: false,
           }}
         />
         <ScrollAnimItem
