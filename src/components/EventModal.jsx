@@ -48,10 +48,10 @@ const EventModal = ({ title, content, show, onHide }) => {
         <p>
           {readMore
             ? content
-            : truncate(content, { length: 150, separator: ' ' })}
+            : truncate(content, { length: 500, separator: ' ' })}
         </p>
         {/* only enable 'read more' functionality if string length is greater than 150 */}
-        {content.length > 150 && (
+        {content.length > 500 && (
           <span
             onClick={toggleReadMore}
             onKeyDown={toggleReadMore}
