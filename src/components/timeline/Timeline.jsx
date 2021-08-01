@@ -10,16 +10,17 @@ import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 
 import { useSpring, animated, config } from 'react-spring';
 import TimelineEvents from './TimelineEvents';
+import LoadingSpinner from '../LoadingSpinner';
+import BackButton from '../BackButton';
 
 // eslint-disable-next-line no-unused-vars
 const Timeline = ({ controllers }) => {
   const chartDiv = useRef(null);
-  // const [eventTitle, setEventTitle] = useState('');
   const [currEvent, setCurrEvent] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [rotDeg, setRotDeg] = useState(0);
   const timelineLabels = useRef(null);
   const currLabelElem = useRef(null);
+  const [loaded, setLoaded] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const [eventDates, setEventDates] = useState([
@@ -146,6 +147,9 @@ const Timeline = ({ controllers }) => {
     chart.colors.step = 2;
     chart.dateFormatter.inputDateFormat = 'yyyy';
     chart.innerRadius = am4core.percent(40);
+    chart.events.on('appeared', () => {
+      setLoaded(true);
+    });
 
     const categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = 'category';
@@ -324,6 +328,8 @@ const Timeline = ({ controllers }) => {
 
   return (
     <div className="timeline-container">
+      <LoadingSpinner show={!loaded} />
+      <BackButton route="/" />
       <div className="timeline-chart-container">
         <animated.div className="timeline-circle" style={timelineAnim}>
           <svg

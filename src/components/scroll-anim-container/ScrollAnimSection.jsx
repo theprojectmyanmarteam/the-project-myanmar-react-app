@@ -20,7 +20,7 @@ const ScrollAnimSection = ({
 }) => {
   const [showSection, setShowSection] = useState(position === 0);
   const [renderSection, setRenderSection] = useState(position === 0);
-  const [amount] = useState(horizontal ? 900 : 800);
+  const [amount] = useState(horizontal ? 900 : 780);
 
   // state to control the sections moving up and down
   const [translate, setTranslate] = useState(position * amount);
