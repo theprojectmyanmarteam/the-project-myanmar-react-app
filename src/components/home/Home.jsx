@@ -29,6 +29,7 @@ const Home = () => {
           nextButton={{
             show: false,
             scrollable: false,
+            label: 'Press down to proceed',
           }}
         />
         <ScrollAnimItem
