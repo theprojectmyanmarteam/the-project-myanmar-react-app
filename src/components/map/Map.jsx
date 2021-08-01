@@ -202,6 +202,9 @@ const Map = ({ visible, controllers }) => {
       
       const rightDiv = document.getElementById('map-info-container');
       rightDiv.classList.contains('shown') ? rightDiv.classList.remove('shown') : rightDiv.classList.add('shown');
+
+      const mapTitle = document.getElementById('map-title');
+      mapTitle.style.display = 'none';
     }
 
     return () => {
@@ -211,7 +214,13 @@ const Map = ({ visible, controllers }) => {
 
   return (
     <animated.div id="splash-container" style={mapAnim}>
-      <div id="mapdiv" className="mapdiv"></div>
+      <div>
+        <div id="map-title">
+          <h1>Where is Myanmar?</h1>
+          <h5>Click on the right country to proceed</h5>
+        </div>
+        <div id="mapdiv" className="mapdiv"></div>
+      </div>
       <div id="map-info-container" className="map-info-container">
         <div id="map-info-detail" className="map-info-detail">
           <h1>Correct! This is Myanmar.</h1>
