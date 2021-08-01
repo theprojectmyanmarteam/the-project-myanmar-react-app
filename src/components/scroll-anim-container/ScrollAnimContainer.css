@@ -1,4 +1,82 @@
 .scroll-anim-container {
   height: 100%;
+  width: 100%;
   overflow: hidden;
+  position: relative;
+}
+
+.up-div {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  top: 0;
+}
+
+.down-div {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  bottom: 0;
+}
+
+.down-text {
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+.up-text {
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.left-div {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  left: 0;
+  white-space: nowrap;
+}
+
+.left-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-left: 6px;
+}
+
+.right-div {
+  display: flex;
+  position: absolute;
+  height: 100%;
+  right: 0;
+  white-space: nowrap;
+}
+
+.right-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fcfcfc;
+  font-size: 20px;
+  margin-right: 6px;
+}
+
+.nav-button,
+.nav-button:active,
+.nav-button:focus {
+  background-color: #0f0f0f;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+}
+
+.nav-button:hover {
+  background-color: #212529;
 }
