@@ -88,7 +88,7 @@ const ScrollAnimSection = ({
     opacity: showSection ? 1 : 0,
     config: config.slow,
     // uncomment to render only on show
-    // display: renderSection ? 'flex' : 'none',
+    display: renderSection ? 'flex' : 'none',
     onRest: () => {
       // After the animation is done, if the element is currently not showing,
       // set display of the this section to none
