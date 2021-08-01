@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import Home from './components/home/Home';
 import Timeline from './components/timeline/Timeline';
+import GroupsInTheCoup from './components/groups-in-the-coup/GroupsInTheCoup';
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouter = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/history" component={Timeline} />
+        <Route exact path="/groups-in-the-coup" component={GroupsInTheCoup} />
         <Route exact path="/coup" component={Timeline} />
         <Route>
           <Redirect to="/" />
