@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './GroupsInTheCoup.css';
 import * as am4core from '@amcharts/amcharts4/core';
 // eslint-disable-next-line camelcase
 import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDirected';
@@ -6,6 +7,8 @@ import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDire
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 
 import EventModal from '../EventModal';
+import BackButton from '../BackButton';
+import LoadingSpinner from '../LoadingSpinner';
 
 am4core.useTheme(am4themes_animated);
 
@@ -14,6 +17,7 @@ const GroupsInTheCoup = () => {
   const [eventTitle, setEventTitle] = useState('');
   const [eventContent, setEventContent] = useState('');
   const [data, setData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   const BACKEND_API_BASE_URL = process.env.REACT_APP_BACKEND_API_BASE_URL;
   const BACKEND_API_SECRET = process.env.REACT_APP_BACKEND_API_SECRET;
@@ -50,6 +54,9 @@ const GroupsInTheCoup = () => {
       'chartdiv',
       am4plugins_forceDirected.ForceDirectedTree
     );
+    chart.events.on('appeared', () => {
+      setLoaded(true);
+    });
     // Create series
     const series = chart.series.push(
       new am4plugins_forceDirected.ForceDirectedSeries()
@@ -107,13 +114,17 @@ const GroupsInTheCoup = () => {
   }, [data]);
 
   return (
-    <div id="chartdiv" style={{ width: '100%', height: '100%' }}>
-      <EventModal
-        title={eventTitle}
-        content={eventContent}
-        show={show}
-        onHide={handleClose}
-      />
+    <div className="groups-in-the-coup-container">
+      <LoadingSpinner show={!loaded} />
+      <BackButton route="/" />
+      <div id="chartdiv" style={{ width: '100%', height: '100%' }}>
+        <EventModal
+          title={eventTitle}
+          content={eventContent}
+          show={show}
+          onHide={handleClose}
+        />
+      </div>
     </div>
   );
 };
