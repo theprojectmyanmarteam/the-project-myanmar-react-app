@@ -1,0 +1,57 @@
+.timeline-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.timeline-chart-container {
+  position: relative;
+  height: 100%;
+  width: 60%;
+}
+
+.timeline-circle {
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.timeline-title {
+  font-size: 35px;
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
+}
+
+.chart-container {
+  height: 100%;
+  width: 100%;
+}
+
+.side-info-container {
+  height: 100%;
+  width: 40%;
+  background-color: white;
+}
+
+.amcharts-AxisLabelCircular:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.amcharts-era-bar {
+  cursor: pointer;
+}
+
+.amcharts-AmChartsLogo {
+  display: none;
+}
+
+.amcharts-ZoomOutButton,
+.amcharts-RoundedRectangle {
+  display: none;
+}

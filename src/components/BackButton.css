@@ -1,0 +1,17 @@
+.back-btn {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-size: 20px;
+  border: none;
+  z-index: 4;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn:hover {
+  background-color: #212529;
+  color: #fcfcfc;
+}
