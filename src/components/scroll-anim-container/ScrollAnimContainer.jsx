@@ -31,6 +31,7 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
   const [renderNextButton, setRenderNextButton] = useState(false);
   const [renderPrevButton, setRenderPrevButton] = useState(false);
   const [nameToIdxMap, setNameToIdxMap] = useState(new Map());
+  const [showLabels, setShowLabels] = useState(true);
 
   // animation for next button
   // -> fade in
@@ -150,6 +151,7 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
     if (currIdx - 1 >= 0) {
       setCurrent(currIdx - 1, childrenList[currIdx - 1].name);
       setPositionOfChildAt(currIdx, 1);
+      setShowLabels(false);
     }
   };
 
@@ -157,6 +159,7 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
     if (currIdx + 1 < childrenList.length) {
       setCurrent(currIdx + 1, childrenList[currIdx + 1].name);
       setPositionOfChildAt(currIdx, -1);
+      setShowLabels(false);
     }
   };
 
@@ -184,6 +187,7 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
             setPrevButtonConfig={(cfg) =>
               setPrevButtonConfigOfChildAt(idx, cfg)
             }
+            onAnimEnd={() => setShowLabels(true)}
           />
         );
       })}
@@ -196,16 +200,20 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           >
             <BsChevronCompactUp size="2em" />
           </Button>
-          <p className="up-text">
-            {childrenList[currChildIdx].prevButtonConfig.label}
-          </p>
+          {showLabels && (
+            <p className="up-text">
+              {childrenList[currChildIdx].prevButtonConfig.label}
+            </p>
+          )}
         </animated.div>
       )}
       {!horizontal && (
         <animated.div className="down-div" style={nextButtonAnim}>
-          <p className="down-text">
-            {childrenList[currChildIdx].nextButtonConfig.label}
-          </p>
+          {showLabels && (
+            <p className="down-text">
+              {childrenList[currChildIdx].nextButtonConfig.label}
+            </p>
+          )}
           <Button
             variant="dark"
             className="nav-button"
@@ -224,16 +232,20 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           >
             <BsChevronCompactLeft size="2em" />
           </Button>
-          <div className="left-text">
-            {childrenList[currChildIdx].prevButtonConfig.label}
-          </div>
+          {showLabels && (
+            <div className="left-text">
+              {childrenList[currChildIdx].prevButtonConfig.label}
+            </div>
+          )}
         </animated.div>
       )}
       {horizontal && (
         <animated.div className="right-div" style={nextButtonAnim}>
-          <div className="right-text">
-            {childrenList[currChildIdx].nextButtonConfig.label}
-          </div>
+          {showLabels && (
+            <div className="right-text">
+              {childrenList[currChildIdx].nextButtonConfig.label}
+            </div>
+          )}
           <Button
             variant="dark"
             className="nav-button"

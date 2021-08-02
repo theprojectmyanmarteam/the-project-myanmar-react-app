@@ -17,6 +17,8 @@ const ScrollAnimSection = ({
   setNextButtonConfig,
   setPrevButtonConfig,
   setName,
+  onAnimStart,
+  onAnimEnd,
 }) => {
   const [showSection, setShowSection] = useState(position === 0);
   const [renderSection, setRenderSection] = useState(position === 0);
@@ -88,14 +90,16 @@ const ScrollAnimSection = ({
     opacity: showSection ? 1 : 0,
     config: config.slow,
     // uncomment to render only on show
-    display: renderSection ? 'flex' : 'none',
+    // display: renderSection ? 'flex' : 'none',
     onRest: () => {
       // After the animation is done, if the element is currently not showing,
       // set display of the this section to none
       if (!showSection && renderSection) {
         setRenderSection(false);
       }
+      onAnimEnd();
     },
+    onStart: onAnimStart,
   });
 
   const passedProps = () => {
@@ -136,6 +140,8 @@ ScrollAnimSection.propTypes = {
   setNextButtonConfig: PropTypes.func, // use to control visibility of next button
   setPrevButtonConfig: PropTypes.func, // use to control visibility of prev button
   setName: PropTypes.func, // use to set the name of the this section
+  onAnimStart: PropTypes.func,
+  onAnimEnd: PropTypes.func,
 };
 
 ScrollAnimSection.defaultProps = {
@@ -156,6 +162,8 @@ ScrollAnimSection.defaultProps = {
   setNextButtonConfig: () => {}, // use to control visibility of next button
   setPrevButtonConfig: () => {},
   setName: () => {},
+  onAnimStart: () => {},
+  onAnimEnd: () => {},
 };
 
 export default ScrollAnimSection;
