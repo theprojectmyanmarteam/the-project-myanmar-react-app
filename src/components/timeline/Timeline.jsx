@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import './Timeline.css';
 
 /* Imports */
@@ -13,51 +12,28 @@ import TimelineEvents from './TimelineEvents';
 import LoadingSpinner from '../LoadingSpinner';
 import BackButton from '../BackButton';
 
-// eslint-disable-next-line no-unused-vars
-const Timeline = ({ controllers }) => {
+import { getHistoryData } from '../../js/fetchData';
+
+const Timeline = () => {
   const chartDiv = useRef(null);
   const [currEvent, setCurrEvent] = useState('');
   const [rotDeg, setRotDeg] = useState(0);
+  const chart = useRef(null);
   const timelineLabels = useRef(null);
   const currLabelElem = useRef(null);
   const [loaded, setLoaded] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
-  const [eventDates, setEventDates] = useState([
-    {
-      name: 'The Anglo-Burmese Wars',
-      start: '1824',
-      end: '1885',
-      dates: ['1826', '1852', '1885'],
-    },
-    {
-      name: 'Colonization',
-      start: '1886',
-      end: '1948',
-      dates: ['1937', '1940', '1942', '1945', '1947'],
-    },
-    {
-      name: 'Nation Building',
-      start: '1949',
-      end: '1962',
-      dates: ['1962'],
-    },
-    {
-      name: 'A Military Myanmar',
-      start: '1963',
-      end: '1988',
-      dates: ['1988'],
-    },
-    {
-      name: 'Union of Myanmar',
-      start: '1989',
-      end: '2010',
-      dates: ['2007', '2008'],
-    },
-  ]);
+  const [eventDates, setEventDates] = useState([]);
 
   useEffect(() => {
-    setCurrEvent(eventDates[0].dates[0]);
+    getHistoryData().then((data) => {
+      // eslint-disable-next-line no-unused-vars
+      const [ancientKingdoms, ...periods] = data.data;
+      periods.pop();
+      setEventDates(periods);
+      setCurrEvent(periods[0].dates[0].date);
+    });
   }, []);
 
   /* Chart code */
@@ -71,15 +47,17 @@ const Timeline = ({ controllers }) => {
   const dateOrEventExists = (value) => {
     return (
       eventDates.some((event) => event.name === value) ||
-      eventDates.some((event) => event.dates.includes(value))
+      eventDates.some((event) =>
+        event.dates.some((date) => date.date === value)
+      )
     );
   };
 
   const findRotation = (label) => {
     if (label.x < 0) {
       let rot = -label.properties.rotation + 180;
-      if (rot > 90) {
-        rot -= 360;
+      if (rot < -90) {
+        rot += 360;
       }
       setRotDeg(rot);
     } else {
@@ -134,190 +112,207 @@ const Timeline = ({ controllers }) => {
   };
 
   useEffect(() => {
-    const chart = am4core.create(chartDiv.current, am4charts.RadarChart);
-    chart.data = [
-      {
-        category: 'placeholder',
-        startDate1: '1826',
-        endDate1: '2010',
-      },
-    ];
+    if (eventDates.length > 0) {
+      chart.current = am4core.create(chartDiv.current, am4charts.RadarChart);
+      const minDate = eventDates[0].dates[0].date;
+      let maxDate =
+        eventDates[eventDates.length - 1].dates[
+          eventDates[eventDates.length - 1].dates.length - 1
+        ].date;
+      maxDate = (parseInt(maxDate, 10) + 1).toString();
 
-    chart.padding(40, 40, 40, 40);
-    chart.colors.step = 2;
-    chart.dateFormatter.inputDateFormat = 'yyyy';
-    chart.innerRadius = am4core.percent(40);
-    chart.events.on('appeared', () => {
-      setLoaded(true);
-    });
+      chart.current.data = [
+        {
+          category: 'placeholder',
+          startDate1: minDate,
+          endDate1: maxDate,
+        },
+      ];
 
-    const categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = 'category';
-    categoryAxis.renderer.labels.template.disabled = true;
-    categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.renderer.tooltipLocation = 0.5;
-    categoryAxis.renderer.grid.template.strokeOpacity = 0;
-    categoryAxis.renderer.minGridDistance = 10;
-    categoryAxis.mouseEnabled = false;
-    categoryAxis.tooltip.disabled = true;
-    categoryAxis.endLocation = 1;
+      chart.current.padding(40, 40, 40, 40);
+      chart.current.colors.step = 2;
+      chart.current.dateFormatter.inputDateFormat = 'yyyy';
+      chart.current.innerRadius = am4core.percent(40);
+      chart.current.events.on('appeared', () => {
+        setLoaded(true);
+      });
+      chart.current.startAngle = 270 - 180;
+      chart.current.endAngle = 270 + 180;
 
-    const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    const labels = dateAxis.renderer.labels.template;
+      const categoryAxis = chart.current.yAxes.push(
+        new am4charts.CategoryAxis()
+      );
+      categoryAxis.dataFields.category = 'category';
+      categoryAxis.renderer.labels.template.disabled = true;
+      categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.tooltipLocation = 0.5;
+      categoryAxis.renderer.grid.template.strokeOpacity = 0;
+      categoryAxis.renderer.minGridDistance = 10;
+      categoryAxis.mouseEnabled = false;
+      categoryAxis.tooltip.disabled = true;
+      categoryAxis.endLocation = 1;
 
-    labels.horizontalCenter = 'middle';
-    labels.verticalCenter = 'middle';
-    labels.relativeRotation = 90;
-    labels.fontSize = 12;
-    labels.adapter.add('text', (label) => {
-      if (dateOrEventExists(label)) {
-        return label;
-      }
-      return '';
-    });
-    timelineLabels.current = labels.clones.values;
-    labels.events.on('hit', (e) => {
-      setCurrEvent(e.target.currentText);
-    });
-    labels.zIndex = -1;
-    dateAxis.strictMinMax = true;
-    dateAxis.renderer.maxLabelPosition = 1;
-    dateAxis.renderer.grid.template.strokeOpacity = 0;
-    dateAxis.renderer.grid.template.disabled = true;
-    dateAxis.min = new Date(1826, 0, 0, 0, 0, 0);
-    dateAxis.max = new Date(2010, 0, 0, 0, 0, 0);
-    dateAxis.mouseEnabled = false;
-    dateAxis.baseInterval = {
-      timeUnit: 'year',
-      count: 1,
-    };
-    dateAxis.renderer.minGridDistance = 0;
-    dateAxis.events.on('startendchanged', resetNodes);
-    dateAxis.events.on('rangechangeended', resetNodes);
+      const dateAxis = chart.current.xAxes.push(new am4charts.DateAxis());
+      const labels = dateAxis.renderer.labels.template;
 
-    labels.radius = 65;
-    labels.align = 'middle';
-    labels.setStateOnChildren = true;
-    dateAxis.tooltip.disabled = true;
-
-    const line = labels.createChild(am4core.Line);
-    line.adapter.add('x2', (l, target) => {
-      if (target.parent.x < 0) {
-        return 269;
-      }
-      return -240;
-    });
-    line.adapter.add('x1', (l, target) => {
-      if (target.parent.x < 0) {
-        return 39;
-      }
-      return -10;
-    });
-    // line.x2 = -240;
-    // line.x1 = -10;
-    line.dy = 8;
-    line.strokeOpacity = 1;
-    line.stroke = am4core.color('#FFFFFF');
-    // line.strokeDasharray = '2,3';
-    line.strokeWidth = 2;
-    line.zIndex = -10;
-
-    const circle = labels.createChild(am4core.Circle);
-    circle.strokeOpacity = 1;
-    circle.stroke = am4core.color('#FFFFFF');
-    circle.strokeWidth = 2;
-    circle.radius = 8;
-    circle.fill = am4core.color('#0f0f0f');
-    circle.adapter.add('x', (l, target) => {
-      if (target.parent.x < 0) {
-        return 44;
-      }
-      return -15;
-    });
-    // circle.x = -15;
-    circle.dy = 8;
-    circle.zIndex = -10;
-    const circleHoverState = circle.states.create('hover');
-    circleHoverState.properties.scale = 1.3;
-
-    const circleActiveState = circle.states.create('active');
-    circleActiveState.properties.scale = 1.3;
-    // circleActiveState.properties.x = -15;
-
-    const createRange = (text, startDate, endDate, color) => {
-      const range = dateAxis.axisRanges.create();
-      range.axisFill.interactionsEnabled = true;
-      range.date = startDate;
-      range.endDate = endDate;
-      range.axisFill.fill = color;
-      range.axisFill.above = true;
-      range.axisFill.parent = dateAxis;
-      range.parent = dateAxis;
-      range.axisFill.zIndex = 1;
-      range.grid.above = true;
-      range.grid.disabled = true;
-      range.label.interactionsEnabled = false;
-      range.label.bent = true;
-      range.label.text = text;
-      range.label.disposeChildren();
-
-      const { axisFill, label } = range;
-      axisFill.innerRadius = -50;
-      axisFill.radius = -0.01;
-      axisFill.disabled = false; // as regular fills are disabled, we need to enable this one
-      axisFill.fillOpacity = 1;
-      axisFill.togglable = true;
-      axisFill.zIndex = 10;
-
-      axisFill.showSystemTooltip = true;
-      axisFill.readerTitle = 'click to zoom';
-      axisFill.cursorOverStyle = am4core.MouseCursorStyle.pointer;
-
-      axisFill.events.on('hit', (event) => {
-        const { dataItem } = event.target;
-        if (!event.target.isActive) {
-          dateAxis.zoom({ start: 0, end: 1 });
-          // range.label.rotation = 0;
-        } else {
-          dateAxis.zoomToDates(dataItem.date, dataItem.endDate);
-          // range.label.rotation = 180;
+      labels.horizontalCenter = 'middle';
+      labels.verticalCenter = 'middle';
+      labels.relativeRotation = 90;
+      labels.fontSize = 12;
+      labels.adapter.add('text', (label) => {
+        if (dateOrEventExists(label)) {
+          return label;
         }
+        return '';
+      });
+      timelineLabels.current = labels.clones.values;
+      labels.events.on('hit', (e) => {
+        setCurrEvent(e.target.currentText);
+      });
+      labels.zIndex = -1;
+      dateAxis.strictMinMax = true;
+      dateAxis.renderer.maxLabelPosition = 1;
+      dateAxis.renderer.grid.template.strokeOpacity = 0;
+      dateAxis.renderer.grid.template.disabled = true;
+      dateAxis.min = new Date(parseInt(minDate, 10), 0, 0, 0, 0, 0);
+      dateAxis.max = new Date(parseInt(maxDate, 10) + 1, 0, 0, 0, 0, 0);
+      dateAxis.mouseEnabled = false;
+      dateAxis.baseInterval = {
+        timeUnit: 'year',
+        count: 1,
+      };
+      dateAxis.renderer.minGridDistance = 0;
+      dateAxis.events.on('startendchanged', resetNodes);
+      dateAxis.events.on('rangechangeended', resetNodes);
+
+      labels.radius = 65;
+      labels.align = 'middle';
+      labels.setStateOnChildren = true;
+      dateAxis.tooltip.disabled = true;
+
+      const line = labels.createChild(am4core.Line);
+      line.adapter.add('x2', (l, target) => {
+        if (target.parent.x < 0) {
+          return 269;
+        }
+        return -240;
+      });
+      line.adapter.add('x1', (l, target) => {
+        if (target.parent.x < 0) {
+          return 39;
+        }
+        return -10;
+      });
+      // line.x2 = -240;
+      // line.x1 = -10;
+      line.dy = 8;
+      line.strokeOpacity = 1;
+      line.stroke = am4core.color('#FFFFFF');
+      // line.strokeDasharray = '2,3';
+      line.strokeWidth = 2;
+      line.zIndex = -10;
+
+      const circle = labels.createChild(am4core.Circle);
+      circle.strokeOpacity = 1;
+      circle.stroke = am4core.color('#FFFFFF');
+      circle.strokeWidth = 2;
+      circle.radius = 8;
+      circle.fill = am4core.color('#0f0f0f');
+      circle.adapter.add('x', (l, target) => {
+        if (target.parent.x < 0) {
+          return 44;
+        }
+        return -15;
+      });
+      // circle.x = -15;
+      circle.dy = 8;
+      circle.zIndex = -10;
+      const circleHoverState = circle.states.create('hover');
+      circleHoverState.properties.scale = 1.3;
+
+      const circleActiveState = circle.states.create('active');
+      circleActiveState.properties.scale = 1.3;
+      // circleActiveState.properties.x = -15;
+
+      const createRange = (text, startDate, endDate, color) => {
+        const range = dateAxis.axisRanges.create();
+        range.axisFill.interactionsEnabled = true;
+        range.date = startDate;
+        range.endDate = endDate;
+        range.axisFill.fill = color;
+        range.axisFill.above = true;
+        range.axisFill.parent = dateAxis;
+        range.parent = dateAxis;
+        range.axisFill.zIndex = 1;
+        range.grid.above = true;
+        range.grid.disabled = true;
+        range.label.interactionsEnabled = false;
+        range.label.bent = true;
+        range.label.text = text;
+        range.label.disposeChildren();
+
+        const { axisFill, label } = range;
+        axisFill.innerRadius = -50;
+        axisFill.radius = -0.01;
+        axisFill.disabled = false; // as regular fills are disabled, we need to enable this one
+        axisFill.fillOpacity = 1;
+        axisFill.togglable = true;
+        axisFill.zIndex = 10;
+
+        axisFill.showSystemTooltip = true;
+        axisFill.readerTitle = 'click to zoom';
+        axisFill.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+
+        axisFill.events.on('hit', (event) => {
+          const { dataItem } = event.target;
+          if (!event.target.isActive) {
+            dateAxis.zoom({ start: 0, end: 1 });
+            // range.label.rotation = 0;
+          } else {
+            dateAxis.zoomToDates(dataItem.date, dataItem.endDate);
+            // range.label.rotation = 180;
+          }
+        });
+
+        // hover state
+        const rangeHoverState = axisFill.states.create('hover');
+        rangeHoverState.properties.innerRadius = -55;
+        rangeHoverState.properties.radius = -5;
+
+        label.location = 0.5;
+        label.fill = am4core.color('black');
+        label.radius = -35;
+        label.relativeRotation = 0;
+        label.fontSize = 15;
+        label.fontWeight = 'bold';
+      };
+
+      eventDates.forEach((event, idx) => {
+        createRange(
+          event.name,
+          new Date(parseInt(event.start, 10), 0, 0, 0, 0),
+          new Date(parseInt(event.end, 10) + 1, 0, 0, 0, 0),
+          colorSet.getIndex(idx * 3)
+        );
       });
 
-      // hover state
-      const rangeHoverState = axisFill.states.create('hover');
-      rangeHoverState.properties.innerRadius = -55;
-      rangeHoverState.properties.radius = -5;
-
-      label.location = 0.5;
-      label.fill = am4core.color('black');
-      label.radius = -35;
-      label.relativeRotation = 0;
-      label.fontSize = 15;
-      label.fontWeight = 'bold';
-    };
-
-    eventDates.forEach((event, idx) => {
-      createRange(
-        event.name,
-        new Date(parseInt(event.start, 10), 0, 0, 0, 0),
-        new Date(parseInt(event.end, 10) + 1, 0, 0, 0, 0),
-        colorSet.getIndex(idx * 3)
+      const series1 = chart.current.series.push(
+        new am4charts.RadarColumnSeries()
       );
-    });
-
-    const series1 = chart.series.push(new am4charts.RadarColumnSeries());
-    series1.name = 'placeholder';
-    series1.dataFields.openDateX = 'startDate1';
-    series1.dataFields.dateX = 'endDate1';
-    series1.dataFields.categoryY = 'category';
-    series1.clustered = true;
-    series1.columns.template.disabled = true;
+      series1.name = 'placeholder';
+      series1.dataFields.openDateX = 'startDate1';
+      series1.dataFields.dateX = 'endDate1';
+      series1.dataFields.categoryY = 'category';
+      series1.clustered = true;
+      series1.columns.template.disabled = true;
+    }
 
     return () => {
-      chart.dispose();
+      if (chart.current) {
+        chart.current.dispose();
+      }
     };
-  }, []);
+  }, [eventDates]);
 
   // animation for next button
   // -> fade in
@@ -362,18 +357,6 @@ const Timeline = ({ controllers }) => {
       </div>
     </div>
   );
-};
-
-Timeline.propTypes = {
-  controllers: PropTypes.shape({
-    enableScroll: PropTypes.func,
-    moveNext: PropTypes.func,
-    movePrev: PropTypes.func,
-  }),
-};
-
-Timeline.defaultProps = {
-  controllers: {},
 };
 
 export default Timeline;

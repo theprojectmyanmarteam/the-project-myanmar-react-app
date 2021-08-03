@@ -17,7 +17,7 @@ import ScrollAnimSection from './ScrollAnimSection';
 
 const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
   const [childrenList, setChildrenList] = useState(
-    Array.isArray(children) && children.length > 0
+    Array.isArray(children)
       ? children.map((elem, idx) => ({
           id: idx,
           elem,
@@ -25,7 +25,15 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           nextButtonConfig: { show: !(idx === 0), label: '' },
           prevButtonConfig: { show: !(idx === 0), label: '' },
         }))
-      : [{ id: 0, elem: children, position: 0 }]
+      : [
+          {
+            id: 0,
+            elem: children,
+            position: 0,
+            nextButtonConfig: { show: false, label: '' },
+            prevButtonConfig: { show: false, label: '' },
+          },
+        ]
   );
   const [currChildIdx, setCurrChildIdx] = useState(0);
   const [renderNextButton, setRenderNextButton] = useState(false);

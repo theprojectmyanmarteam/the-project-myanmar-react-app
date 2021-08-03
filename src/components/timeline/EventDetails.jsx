@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './EventDetails.css';
-import Image from 'react-bootstrap/Image';
-import imagePlaceholder from '../../resources/image-placeholder.jpeg';
 
 const EventDetails = ({ date, description, title }) => {
   return (
     <div className="event-details-container">
       <div className="event-details-content">
-        <Image className="event-details-image" src={imagePlaceholder} fluid />
         <div className="event-details-date-container">
           <div className="line2" />
           <svg
