@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './EventDetails.css';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 const EventDetails = ({ date, description, title }) => {
   return (
@@ -25,7 +26,11 @@ const EventDetails = ({ date, description, title }) => {
           <div className="event-details-date">{date}</div>
         </div>
         <div className="event-details-title">{title}</div>
-        <div className="event-details-description">{description}</div>
+        <MarkdownPreview
+          className="event-details-description"
+          source={description}
+          style={{ fontFamily: 'Nunito, sans-serif', fontSize: '16px' }}
+        />
       </div>
       <div className="event-details-svg">
         <div className="line1" />

@@ -12,7 +12,7 @@ import TimelineEvents from './TimelineEvents';
 import LoadingSpinner from '../LoadingSpinner';
 import BackButton from '../BackButton';
 
-import { getHistoryData } from '../../js/fetchData';
+import { getHistoryData, getCoupData } from '../../js/fetchData';
 
 const Timeline = () => {
   const chartDiv = useRef(null);
@@ -28,11 +28,15 @@ const Timeline = () => {
 
   useEffect(() => {
     getHistoryData().then((data) => {
+      console.log(data);
       // eslint-disable-next-line no-unused-vars
       const [ancientKingdoms, ...periods] = data.data;
       periods.pop();
       setEventDates(periods);
       setCurrEvent(periods[0].dates[0].date);
+    });
+    getCoupData().then((data) => {
+      console.log(data);
     });
   }, []);
 
