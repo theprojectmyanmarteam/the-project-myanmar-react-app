@@ -25,6 +25,7 @@ const TimelineEvents = ({ currEvent, eventData, onChange }) => {
                   date={date.date}
                   description={date.content}
                   title={date.title}
+                  references={date.learnMore}
                 />
               }
             />

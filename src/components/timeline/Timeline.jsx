@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import './Timeline.css';
 
 /* Imports */
@@ -14,7 +15,15 @@ import BackButton from '../BackButton';
 
 import { getHistoryData, getCoupData } from '../../js/fetchData';
 
-const Timeline = () => {
+// Amchart configurations
+const LEFT_LINE_X1 = 39;
+const LEFT_LINE_X2 = 249;
+const LEFT_CIRCLE_X = 44;
+const RIGHT_LINE_X1 = -10;
+const RIGHT_LINE_X2 = -220;
+const RIGHT_CIRCLE_X = -15;
+
+const Timeline = ({ type }) => {
   const chartDiv = useRef(null);
   const [currEvent, setCurrEvent] = useState('');
   const [rotDeg, setRotDeg] = useState(0);
@@ -27,17 +36,27 @@ const Timeline = () => {
   const [eventDates, setEventDates] = useState([]);
 
   useEffect(() => {
-    getHistoryData().then((data) => {
-      console.log(data);
-      // eslint-disable-next-line no-unused-vars
-      const [ancientKingdoms, ...periods] = data.data;
-      periods.pop();
-      setEventDates(periods);
-      setCurrEvent(periods[0].dates[0].date);
-    });
-    getCoupData().then((data) => {
-      console.log(data);
-    });
+    if (type === 'HISTORY') {
+      getHistoryData().then((data) => {
+        console.log(data);
+        // eslint-disable-next-line no-unused-vars
+        const periods = data.data;
+        periods.pop();
+        setEventDates(periods);
+        setCurrEvent(periods[0].dates[0].date);
+      });
+      getCoupData().then((data) => {
+        console.log(data);
+      });
+    } else {
+      getCoupData().then((data) => {
+        console.log(data);
+        // eslint-disable-next-line no-unused-vars
+        const [november, ...periods] = data.data;
+        setEventDates(periods);
+        setCurrEvent(periods[0].dates[0].date);
+      });
+    }
   }, []);
 
   /* Chart code */
@@ -90,13 +109,13 @@ const Timeline = () => {
         const line = allLabels[i].children.values[0];
         const circle = allLabels[i].children.values[1];
         if (allLabels[i].x < 0) {
-          line.x2 = 269;
-          line.x1 = 39;
-          circle.x = 44;
+          line.x2 = LEFT_LINE_X2;
+          line.x1 = LEFT_LINE_X1;
+          circle.x = LEFT_CIRCLE_X;
         } else {
-          line.x2 = -240;
-          line.x1 = -10;
-          circle.x = -15;
+          line.x2 = RIGHT_LINE_X2;
+          line.x1 = RIGHT_LINE_X1;
+          circle.x = RIGHT_CIRCLE_X;
         }
       }
     }
@@ -119,11 +138,15 @@ const Timeline = () => {
     if (eventDates.length > 0) {
       chart.current = am4core.create(chartDiv.current, am4charts.RadarChart);
       const minDate = eventDates[0].dates[0].date;
+      console.log(minDate);
       let maxDate =
         eventDates[eventDates.length - 1].dates[
           eventDates[eventDates.length - 1].dates.length - 1
         ].date;
-      maxDate = (parseInt(maxDate, 10) + 1).toString();
+      console.log(maxDate);
+      if (type === 'HISTORY') {
+        maxDate = (parseInt(maxDate, 10) + 1).toString();
+      }
 
       chart.current.data = [
         {
@@ -133,9 +156,13 @@ const Timeline = () => {
         },
       ];
 
-      chart.current.padding(40, 40, 40, 40);
+      chart.current.padding(60, 40, 60, 40);
       chart.current.colors.step = 2;
-      chart.current.dateFormatter.inputDateFormat = 'yyyy';
+      if (type === 'HISTORY') {
+        chart.current.dateFormatter.inputDateFormat = 'yyyy';
+      } else {
+        chart.current.dateFormatter.inputDateFormat = 'MMMM dd, yyyy';
+      }
       chart.current.innerRadius = am4core.percent(40);
       chart.current.events.on('appeared', () => {
         setLoaded(true);
@@ -165,6 +192,7 @@ const Timeline = () => {
       labels.fontSize = 12;
       labels.adapter.add('text', (label) => {
         if (dateOrEventExists(label)) {
+          console.log(label);
           return label;
         }
         return '';
@@ -178,8 +206,13 @@ const Timeline = () => {
       dateAxis.renderer.maxLabelPosition = 1;
       dateAxis.renderer.grid.template.strokeOpacity = 0;
       dateAxis.renderer.grid.template.disabled = true;
-      dateAxis.min = new Date(parseInt(minDate, 10), 0, 0, 0, 0, 0);
-      dateAxis.max = new Date(parseInt(maxDate, 10) + 1, 0, 0, 0, 0, 0);
+      if (type === 'HISTORY') {
+        dateAxis.min = new Date(parseInt(minDate, 10), 0, 0, 0, 0, 0);
+        dateAxis.max = new Date(parseInt(maxDate, 10) + 1, 0, 0, 0, 0, 0);
+      } else {
+        dateAxis.min = new Date(minDate);
+        dateAxis.max = new Date(maxDate);
+      }
       dateAxis.mouseEnabled = false;
       dateAxis.baseInterval = {
         timeUnit: 'year',
@@ -197,22 +230,19 @@ const Timeline = () => {
       const line = labels.createChild(am4core.Line);
       line.adapter.add('x2', (l, target) => {
         if (target.parent.x < 0) {
-          return 269;
+          return LEFT_LINE_X2;
         }
-        return -240;
+        return RIGHT_LINE_X2;
       });
       line.adapter.add('x1', (l, target) => {
         if (target.parent.x < 0) {
-          return 39;
+          return LEFT_LINE_X1;
         }
-        return -10;
+        return RIGHT_LINE_X1;
       });
-      // line.x2 = -240;
-      // line.x1 = -10;
       line.dy = 8;
       line.strokeOpacity = 1;
       line.stroke = am4core.color('#FFFFFF');
-      // line.strokeDasharray = '2,3';
       line.strokeWidth = 2;
       line.zIndex = -10;
 
@@ -224,11 +254,10 @@ const Timeline = () => {
       circle.fill = am4core.color('#0f0f0f');
       circle.adapter.add('x', (l, target) => {
         if (target.parent.x < 0) {
-          return 44;
+          return LEFT_CIRCLE_X;
         }
-        return -15;
+        return RIGHT_CIRCLE_X;
       });
-      // circle.x = -15;
       circle.dy = 8;
       circle.zIndex = -10;
       const circleHoverState = circle.states.create('hover');
@@ -236,7 +265,6 @@ const Timeline = () => {
 
       const circleActiveState = circle.states.create('active');
       circleActiveState.properties.scale = 1.3;
-      // circleActiveState.properties.x = -15;
 
       const createRange = (text, startDate, endDate, color) => {
         const range = dateAxis.axisRanges.create();
@@ -292,12 +320,21 @@ const Timeline = () => {
       };
 
       eventDates.forEach((event, idx) => {
-        createRange(
-          event.name,
-          new Date(parseInt(event.start, 10), 0, 0, 0, 0),
-          new Date(parseInt(event.end, 10) + 1, 0, 0, 0, 0),
-          colorSet.getIndex(idx * 3)
-        );
+        if (type === 'HISTORY') {
+          createRange(
+            event.name,
+            new Date(parseInt(event.start, 10), 0, 0, 0, 0),
+            new Date(parseInt(event.end, 10) + 1, 0, 0, 0, 0),
+            colorSet.getIndex(idx * 3)
+          );
+        } else {
+          createRange(
+            event.name,
+            new Date(event.start),
+            new Date(event.end),
+            colorSet.getIndex(idx * 3)
+          );
+        }
       });
 
       const series1 = chart.current.series.push(
@@ -361,6 +398,14 @@ const Timeline = () => {
       </div>
     </div>
   );
+};
+
+Timeline.propTypes = {
+  type: PropTypes.string,
+};
+
+Timeline.defaultProps = {
+  type: 'HISTORY',
 };
 
 export default Timeline;
