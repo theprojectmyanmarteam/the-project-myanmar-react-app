@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.18",
+    "@amcharts/amcharts4": "^4.10.22",
     "@amcharts/amcharts4-geodata": "^4.1.20",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "@uiw/react-markdown-preview": "^3.2.2",
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
@@ -18,6 +19,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-sound": "^1.2.0",
+    "react-spinners": "^0.11.0",
     "react-spring": "^9.0.0",
     "react-typist": "^2.0.5",
     "web-vitals": "^1.1.1"

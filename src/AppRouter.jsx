@@ -14,9 +14,13 @@ const AppRouter = () => {
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/history" component={Timeline} />
+        <Route exact path="/history">
+          <Timeline type="HISTORY" />
+        </Route>
         <Route exact path="/groups-in-the-coup" component={GroupsInTheCoup} />
-        <Route exact path="/coup" component={Timeline} />
+        <Route exact path="/coup">
+          <Timeline type="COUP" />
+        </Route>
         <Route>
           <Redirect to="/" />
         </Route>

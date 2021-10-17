@@ -12,7 +12,7 @@ const DirectoryCard = ({ name, route }) => {
 
   // animation that moves this element
   const hoverAnim = useSpring({
-    transform: hoverState ? `scale(1.1)` : `scale(1)`,
+    transform: hoverState ? 'scale(1.1)' : 'scale(1)',
     config: config.gentle,
   });
 

@@ -11,7 +11,7 @@ const Quiz = ({ controllers }) => {
     <div className="quiz-container">
       <ScrollAnimContainer horizontal>
         <ScrollAnimItem
-          content={<QuizQuestion onRightAnswer={controllers.moveNext} />}
+          content={<QuizQuestion onRightAnswer={controllers.showNext} />}
           nextButton={{ show: false }}
         />
         <ScrollAnimItem
@@ -26,6 +26,7 @@ const Quiz = ({ controllers }) => {
 Quiz.propTypes = {
   controllers: PropTypes.shape({
     moveNext: PropTypes.func,
+    showNext: PropTypes.func,
   }),
 };
 

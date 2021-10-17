@@ -16,7 +16,7 @@ const Home = () => {
           content={<Title />}
           nextButton={{
             show: false,
-            label: 'Press down to start',
+            label: 'Click to start',
             scrollable: false,
           }}
         />
