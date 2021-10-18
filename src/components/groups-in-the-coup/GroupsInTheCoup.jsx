@@ -32,8 +32,6 @@ const GroupsInTheCoup = () => {
 
   // useEffect for componentDidMount & componentDidUpdate
   useEffect(async () => {
-    // eslint-disable-next-line no-console
-    console.log('URL: ', BACKEND_API_BASE_URL);
     let res = await fetch(
       `${BACKEND_API_BASE_URL}/sections?title=The%20Groups%20in%20the%20Coup`,
       {
