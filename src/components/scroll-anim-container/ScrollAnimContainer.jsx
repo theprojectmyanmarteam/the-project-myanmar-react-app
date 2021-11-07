@@ -22,16 +22,24 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           id: idx,
           elem,
           position: idx === 0 ? 0 : 1, // first section starts at center, the rest starts in the front
-          nextButtonConfig: { show: !(idx === 0), label: '' },
-          prevButtonConfig: { show: !(idx === 0), label: '' },
+          nextButtonConfig: {
+            show: !(idx === 0),
+            label: '',
+            onClick: () => {},
+          },
+          prevButtonConfig: {
+            show: !(idx === 0),
+            label: '',
+            onClick: () => {},
+          },
         }))
       : [
           {
             id: 0,
             elem: children,
             position: 0,
-            nextButtonConfig: { show: false, label: '' },
-            prevButtonConfig: { show: false, label: '' },
+            nextButtonConfig: { show: false, label: '', onClick: () => {} },
+            prevButtonConfig: { show: false, label: '', onClick: () => {} },
           },
         ]
   );
@@ -204,7 +212,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => movePrev(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].prevButtonConfig.onClick) {
+                childrenList[currChildIdx].prevButtonConfig.onClick();
+              }
+              movePrev(currChildIdx);
+            }}
           >
             <BsChevronCompactUp size="2em" />
           </Button>
@@ -225,7 +238,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => moveNext(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].nextButtonConfig.onClick) {
+                childrenList[currChildIdx].nextButtonConfig.onClick();
+              }
+              moveNext(currChildIdx);
+            }}
           >
             <BsChevronCompactDown size="2em" />
           </Button>
@@ -236,7 +254,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => movePrev(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].prevButtonConfig.onClick) {
+                childrenList[currChildIdx].prevButtonConfig.onClick();
+              }
+              movePrev(currChildIdx);
+            }}
           >
             <BsChevronCompactLeft size="2em" />
           </Button>
@@ -257,7 +280,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => moveNext(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].nextButtonConfig.onClick) {
+                childrenList[currChildIdx].nextButtonConfig.onClick();
+              }
+              moveNext(currChildIdx);
+            }}
           >
             <BsChevronCompactRight size="2em" />
           </Button>
