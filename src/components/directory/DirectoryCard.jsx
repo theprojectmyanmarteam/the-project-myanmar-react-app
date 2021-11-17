@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './DirectoryCard.css';
-import Image from 'react-bootstrap/Image';
 import { useSpring, animated, config } from 'react-spring';
 import { useHistory } from 'react-router-dom';
-import imagePlaceholder from '../../resources/image-placeholder.jpeg';
+
+import { VscFolder, VscFolderOpened } from 'react-icons/vsc';
 
 const DirectoryCard = ({ name, route }) => {
   const history = useHistory();
@@ -26,9 +26,14 @@ const DirectoryCard = ({ name, route }) => {
         history.push({
           pathname: route,
         });
+        sessionStorage.setItem(name, true);
       }}
     >
-      <Image className="directory-card-image" src={imagePlaceholder} fluid />
+      {sessionStorage.getItem(name) ? (
+        <VscFolderOpened size={100} />
+      ) : (
+        <VscFolder size={100} />
+      )}
       <div className="directory-card-name">{name}</div>
     </animated.div>
   );

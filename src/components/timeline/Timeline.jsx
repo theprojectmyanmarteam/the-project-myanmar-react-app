@@ -41,18 +41,14 @@ const Timeline = ({ type }) => {
         console.log(data);
         // eslint-disable-next-line no-unused-vars
         const periods = data.data;
-        periods.pop();
         setEventDates(periods);
         setCurrEvent(periods[0].dates[0].date);
-      });
-      getCoupData().then((data) => {
-        console.log(data);
       });
     } else {
       getCoupData().then((data) => {
         console.log(data);
         // eslint-disable-next-line no-unused-vars
-        const [november, ...periods] = data.data;
+        const periods = data.data;
         setEventDates(periods);
         setCurrEvent(periods[0].dates[0].date);
       });
@@ -67,6 +63,7 @@ const Timeline = ({ type }) => {
   const colorSet = new am4core.ColorSet();
   // Themes end
 
+  // eslint-disable-next-line no-unused-vars
   const dateOrEventExists = (value) => {
     return (
       eventDates.some((event) => event.name === value) ||
@@ -146,6 +143,11 @@ const Timeline = ({ type }) => {
       console.log(maxDate);
       if (type === 'HISTORY') {
         maxDate = (parseInt(maxDate, 10) + 1).toString();
+      } else {
+        const date = new Date(maxDate);
+        date.setDate(date.getDate() + 1);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        maxDate = date.toLocaleDateString('en-US', options);
       }
 
       chart.current.data = [
@@ -192,7 +194,6 @@ const Timeline = ({ type }) => {
       labels.fontSize = 12;
       labels.adapter.add('text', (label) => {
         if (dateOrEventExists(label)) {
-          console.log(label);
           return label;
         }
         return '';
@@ -214,10 +215,20 @@ const Timeline = ({ type }) => {
         dateAxis.max = new Date(maxDate);
       }
       dateAxis.mouseEnabled = false;
-      dateAxis.baseInterval = {
-        timeUnit: 'year',
-        count: 1,
-      };
+      if (type === 'HISTORY') {
+        dateAxis.baseInterval = {
+          timeUnit: 'year',
+          count: 1,
+        };
+      } else {
+        dateAxis.baseInterval = {
+          timeUnit: 'day',
+          count: 1,
+        };
+        dateAxis.dateFormats.setKey('day', 'MMMM d, yyyy');
+        dateAxis.periodChangeDateFormats.setKey('day', 'MMMM d, yyyy');
+      }
+
       dateAxis.renderer.minGridDistance = 0;
       dateAxis.events.on('startendchanged', resetNodes);
       dateAxis.events.on('rangechangeended', resetNodes);

@@ -85,11 +85,13 @@ ScrollAnimItem.propTypes = {
     show: PropTypes.bool, // set to false to hide this button
     label: PropTypes.string, // put a label next to the button
     scrollable: PropTypes.bool, // can be triggered by scroll
+    onClick: PropTypes.func,
   }),
   prevButton: PropTypes.shape({
     show: PropTypes.bool,
     label: PropTypes.string,
     scrollable: PropTypes.bool,
+    onClick: PropTypes.func,
   }),
   moveNext: PropTypes.func,
   movePrev: PropTypes.func,
@@ -112,11 +114,13 @@ ScrollAnimItem.defaultProps = {
     show: true,
     label: '',
     scrollable: false,
+    onClick: () => {},
   },
   prevButton: {
     show: true,
     label: '',
     scrollable: false,
+    onClick: () => {},
   },
   moveNext: () => {},
   movePrev: () => {},
