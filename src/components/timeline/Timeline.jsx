@@ -7,6 +7,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themesDark from '@amcharts/amcharts4/themes/dark';
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
+import { Helmet } from 'react-helmet';
 
 import { useSpring, animated, config } from 'react-spring';
 import TimelineEvents from './TimelineEvents';
@@ -375,6 +376,13 @@ const Timeline = ({ type }) => {
 
   return (
     <div className="timeline-container">
+      <Helmet>
+        <title>Timeline</title>
+        <meta
+          name="description"
+          content="Historical and coup timelines curated by The Project Myanmar team."
+        />
+      </Helmet>
       <LoadingSpinner show={!loaded} />
       <BackButton route="/" />
       <div className="timeline-chart-container">

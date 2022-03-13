@@ -5,6 +5,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDirected';
 // eslint-disable-next-line camelcase
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import { Helmet } from 'react-helmet';
 
 import EventModal from '../EventModal';
 import BackButton from '../BackButton';
@@ -113,6 +114,13 @@ const GroupsInTheCoup = () => {
 
   return (
     <div className="groups-in-the-coup-container">
+      <Helmet>
+        <title>Groups In the Coup</title>
+        <meta
+          name="description"
+          content="A graph visualization of groups and entities in the recent coup."
+        />
+      </Helmet>
       <LoadingSpinner show={!loaded} />
       <BackButton route="/" />
       <div id="chartdiv" style={{ width: '100%', height: '100%' }}>
