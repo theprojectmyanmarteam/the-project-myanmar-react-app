@@ -25,3 +25,9 @@
 .map-info-detail {
 
 }
+
+@media only screen and (max-width: 800px) {
+    .map-info-detail {
+        font-size: 0.7rem;
+    }
+}
