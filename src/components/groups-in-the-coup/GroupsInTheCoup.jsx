@@ -24,9 +24,9 @@ const GroupsInTheCoup = () => {
   const BACKEND_API_SECRET = process.env.REACT_APP_BACKEND_API_SECRET;
 
   // Colors
-  const almostBlack = '#0f0f0f';
-  const almostWhite = '#e0e0e0';
-  const gray = '#b5b5b5';
+  const ALMOST_BLACK = '#0f0f0f';
+  const ALMOST_WHITE = '#e0e0e0';
+  const GRAY = '#b5b5b5';
 
   const handleClose = () => {
     setShow(false);
@@ -77,11 +77,11 @@ const GroupsInTheCoup = () => {
     series.dataFields.isContentList = 'isContentList';
 
     // Custom color
-    series.nodes.template.circle.fill = am4core.color(almostBlack);
-    series.nodes.template.circle.stroke = am4core.color(gray);
-    series.nodes.template.outerCircle.fill = am4core.color(almostBlack);
-    series.nodes.template.outerCircle.stroke = am4core.color(gray);
-    series.nodes.template.label.fill = am4core.color(almostWhite);
+    series.nodes.template.circle.fill = am4core.color(ALMOST_BLACK);
+    series.nodes.template.circle.stroke = am4core.color(GRAY);
+    series.nodes.template.outerCircle.fill = am4core.color(ALMOST_BLACK);
+    series.nodes.template.outerCircle.stroke = am4core.color(GRAY);
+    series.nodes.template.label.fill = am4core.color(ALMOST_WHITE);
 
     // Add labels
     series.nodes.template.label.text = '{name}';
