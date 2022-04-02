@@ -23,6 +23,11 @@ const GroupsInTheCoup = () => {
   const BACKEND_API_BASE_URL = process.env.REACT_APP_BACKEND_API_BASE_URL;
   const BACKEND_API_SECRET = process.env.REACT_APP_BACKEND_API_SECRET;
 
+  // Colors
+  const almostBlack = '#0f0f0f';
+  const almostWhite = '#e0e0e0';
+  const gray = '#b5b5b5';
+
   const handleClose = () => {
     setShow(false);
   };
@@ -70,6 +75,13 @@ const GroupsInTheCoup = () => {
     series.dataFields.content = 'content';
     series.dataFields.contentList = 'contentList';
     series.dataFields.isContentList = 'isContentList';
+
+    // Custom color
+    series.nodes.template.circle.fill = am4core.color(almostBlack);
+    series.nodes.template.circle.stroke = am4core.color(gray);
+    series.nodes.template.outerCircle.fill = am4core.color(almostBlack);
+    series.nodes.template.outerCircle.stroke = am4core.color(gray);
+    series.nodes.template.label.fill = am4core.color(almostWhite);
 
     // Add labels
     series.nodes.template.label.text = '{name}';
