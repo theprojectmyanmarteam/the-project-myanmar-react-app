@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './EventDetails.css';
-import MarkdownPreview from '@uiw/react-markdown-preview';
+// import MarkdownPreview from '@uiw/react-markdown-preview';
+import TextContainer from '../utils/text-container/TextContainer';
 
 // eslint-disable-next-line no-unused-vars
 const EventDetails = ({ date, description, references, title }) => {
@@ -33,7 +34,7 @@ const EventDetails = ({ date, description, references, title }) => {
           </svg>
           <div className="event-details-date">{date}</div>
         </div>
-        <div className="event-details-text-container">
+        {/* <div className="event-details-text-container">
           <div className="event-details-title">{title}</div>
           <MarkdownPreview
             className="event-details-description"
@@ -58,7 +59,12 @@ const EventDetails = ({ date, description, references, title }) => {
               />
             </div>
           )}
-        </div>
+        </div> */}
+        <TextContainer
+          title={title}
+          description={description}
+          references={references}
+        />
       </div>
       <div className="line1" />
     </div>

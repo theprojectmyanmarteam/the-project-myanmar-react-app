@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import './GroupsInTheCoup.css';
 import * as am4core from '@amcharts/amcharts4/core';
@@ -8,6 +9,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Helmet } from 'react-helmet';
 
 import EventModal from '../EventModal';
+import BasicModal from '../utils/BasicModal';
 import BackButton from '../BackButton';
 import LoadingSpinner from '../LoadingSpinner';
 
@@ -15,8 +17,9 @@ am4core.useTheme(am4themes_animated);
 
 const GroupsInTheCoup = () => {
   const [show, setShow] = useState(false);
-  const [eventTitle, setEventTitle] = useState('');
-  const [eventContent, setEventContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [references, setReferences] = useState('');
   const [data, setData] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -73,6 +76,7 @@ const GroupsInTheCoup = () => {
     series.dataFields.collapsed = 'collapsed';
     series.dataFields.hasContent = 'hasContent';
     series.dataFields.content = 'content';
+    series.dataFields.references = 'learnMore';
     series.dataFields.contentList = 'contentList';
     series.dataFields.isContentList = 'isContentList';
 
@@ -110,12 +114,16 @@ const GroupsInTheCoup = () => {
 
     series.nodes.template.events.on('hit', (event) => {
       if (event.target.dataItem && event.target.dataItem.hasContent) {
-        setEventTitle(event.target.dataItem.name);
-        if (event.target.dataItem.isContentList) {
-          setEventContent(event.target.dataItem.contentList);
-        } else {
-          setEventContent(event.target.dataItem.content);
-        }
+        setTitle(event.target.dataItem.name);
+        setContent(event.target.dataItem.content);
+        setReferences(event.target.dataItem.references);
+        // eslint-disable-next-line no-console
+        console.log('references: ', references);
+        // if (event.target.dataItem.isContentList) {
+        //   setContent(event.target.dataItem.contentList);
+        // } else {
+        //   setContent(event.target.dataItem.content);
+        // }
         handleShow();
       }
     });
@@ -136,15 +144,30 @@ const GroupsInTheCoup = () => {
       <LoadingSpinner show={!loaded} />
       <BackButton route="/" />
       <div id="chartdiv" style={{ width: '100%', height: '100%' }}>
-        <EventModal
-          title={eventTitle}
-          content={eventContent}
+        {/* <EventModal
+          title={title}
+          content={content}
           show={show}
           onHide={handleClose}
+        /> */}
+        <BasicModal
+          title={title}
+          content={content}
+          references={references}
+          show={show}
+          setShow={setShow}
         />
       </div>
     </div>
   );
+  // return (
+  //   <BasicModal
+  //     title="Title"
+  //     content="This is a sample content"
+  //     show={show}
+  //     setShow={setShow}
+  //   />
+  // );
 };
 
 export default GroupsInTheCoup;
