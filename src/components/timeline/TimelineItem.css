@@ -1,0 +1,22 @@
+.timeline-item-circle {
+  transform: rotateX(55deg);
+}
+
+.timeline-item {
+  position: absolute;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #0f0f0f;
+  border: none;
+  border-radius: 0;
+}
+
+.timeline-item:hover,
+.timeline-item:active,
+.timeline-item:focus {
+  background-color: #212529 !important;
+}

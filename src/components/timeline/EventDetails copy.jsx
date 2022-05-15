@@ -16,6 +16,21 @@ const EventDetails = ({ date, description, references, title }) => {
     <div className="event-details-container">
       <div className="event-details-content">
         <div className="event-details-date-container">
+          <div className="line2" />
+          <svg
+            className="event-details-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+          >
+            <circle
+              cx="50%"
+              cy="50%"
+              r="35"
+              stroke="black"
+              strokeWidth="18"
+              fill="white"
+            />
+          </svg>
           <div className="event-details-date">{date}</div>
         </div>
         <div className="event-details-text-container">
@@ -45,6 +60,7 @@ const EventDetails = ({ date, description, references, title }) => {
           )}
         </div>
       </div>
+      <div className="line1" />
     </div>
   );
 };

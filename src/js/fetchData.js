@@ -1,5 +1,5 @@
 const THE_PROJECT_MYANMAR_SERVICE =
-  'https://projectmyanmar.herokuapp.com/projectmm/sections';
+  'https://projectmyanmar.herokuapp.com/projectmm';
 const API_SECRET = '442A472D4B615064';
 
 /**
@@ -7,7 +7,7 @@ const API_SECRET = '442A472D4B615064';
  */
 const getHistoryData = async () => {
   const response = await fetch(
-    `${THE_PROJECT_MYANMAR_SERVICE}?title=The%20History%20Timeline`,
+    `${THE_PROJECT_MYANMAR_SERVICE}/sections?title=The%20History%20Timeline`,
     {
       method: 'GET',
       headers: {
@@ -24,7 +24,7 @@ const getHistoryData = async () => {
  */
 const getCoupData = async () => {
   const response = await fetch(
-    `${THE_PROJECT_MYANMAR_SERVICE}?title=The%20Coup%20Timeline`,
+    `${THE_PROJECT_MYANMAR_SERVICE}/sections?title=The%20Coup%20Timeline`,
     {
       method: 'GET',
       headers: {
@@ -36,4 +36,18 @@ const getCoupData = async () => {
   return response.json();
 };
 
-export { getHistoryData, getCoupData };
+/**
+ * Post  Analytics
+ */
+const postAnalytics = async () => {
+  const response = await fetch(`${THE_PROJECT_MYANMAR_SERVICE}/analytics`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apiSecret: API_SECRET,
+    },
+  });
+  return response.json();
+};
+
+export { getHistoryData, getCoupData, postAnalytics };
