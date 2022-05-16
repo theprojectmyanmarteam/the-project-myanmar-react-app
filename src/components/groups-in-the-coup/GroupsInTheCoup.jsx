@@ -5,6 +5,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4PluginsForceDirected from '@amcharts/amcharts4/plugins/forceDirected';
 // eslint-disable-next-line camelcase
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import Helmet from 'react-helmet';
 
 import EventModal from '../EventModal';
 import BackButton from '../BackButton';
@@ -22,6 +23,11 @@ const GroupsInTheCoup = () => {
   const BACKEND_API_BASE_URL = process.env.REACT_APP_BACKEND_API_BASE_URL;
   const BACKEND_API_SECRET = process.env.REACT_APP_BACKEND_API_SECRET;
 
+  // Colors
+  const ALMOST_BLACK = '#0f0f0f';
+  const ALMOST_WHITE = '#e0e0e0';
+  const GRAY = '#b5b5b5';
+
   const handleClose = () => {
     setShow(false);
   };
@@ -32,8 +38,6 @@ const GroupsInTheCoup = () => {
 
   // useEffect for componentDidMount & componentDidUpdate
   useEffect(async () => {
-    // eslint-disable-next-line no-console
-    console.log('URL: ', BACKEND_API_BASE_URL);
     let res = await fetch(
       `${BACKEND_API_BASE_URL}/sections?title=The%20Groups%20in%20the%20Coup`,
       {
@@ -71,6 +75,13 @@ const GroupsInTheCoup = () => {
     series.dataFields.content = 'content';
     series.dataFields.contentList = 'contentList';
     series.dataFields.isContentList = 'isContentList';
+
+    // Custom color
+    series.nodes.template.circle.fill = am4core.color(ALMOST_BLACK);
+    series.nodes.template.circle.stroke = am4core.color(GRAY);
+    series.nodes.template.outerCircle.fill = am4core.color(ALMOST_BLACK);
+    series.nodes.template.outerCircle.stroke = am4core.color(GRAY);
+    series.nodes.template.label.fill = am4core.color(ALMOST_WHITE);
 
     // Add labels
     series.nodes.template.label.text = '{name}';
@@ -115,6 +126,13 @@ const GroupsInTheCoup = () => {
 
   return (
     <div className="groups-in-the-coup-container">
+      <Helmet>
+        <title>Groups In the Coup</title>
+        <meta
+          name="description"
+          content="A graph visualization of groups and entities in the recent coup."
+        />
+      </Helmet>
       <LoadingSpinner show={!loaded} />
       <BackButton route="/" />
       <div id="chartdiv" style={{ width: '100%', height: '100%' }}>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './Timeline.css';
 
 import Xarrow from 'react-xarrows';
+import Helmet from 'react-helmet';
 import TimelineEvents from './TimelineEvents';
 import LoadingSpinner from '../LoadingSpinner';
 import TimelineItem from './TimelineItem';
@@ -83,6 +84,13 @@ const Timeline = ({ type }) => {
 
   return (
     <div className="timeline-container">
+      <Helmet>
+        <title>Timeline</title>
+        <meta
+          name="description"
+          content="Historical and coup timelines curated by The Project Myanmar team."
+        />
+      </Helmet>
       <LoadingSpinner show={timelineObjects.length === 0} />
       <div ref={timelineContainerRef} className="timeline-scroll-container">
         <div style={{ height: `${timelineHeight}px` }}>
