@@ -1,6 +1,5 @@
-const THE_PROJECT_MYANMAR_SERVICE =
-  'https://projectmyanmar.herokuapp.com/projectmm';
-const API_SECRET = '442A472D4B615064';
+const THE_PROJECT_MYANMAR_SERVICE = process.env.REACT_APP_BACKEND_API_BASE_URL;
+const API_SECRET = process.env.REACT_APP_BACKEND_API_SECRET;
 
 /**
  * Get History Timeline Data
