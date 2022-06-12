@@ -8,10 +8,11 @@ import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDire
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Helmet } from 'react-helmet';
 
-import EventModal from '../EventModal';
 import BasicModal from '../utils/BasicModal';
 import BackButton from '../BackButton';
 import LoadingSpinner from '../LoadingSpinner';
+
+import isMobile from '../utils/browserUtils';
 
 am4core.useTheme(am4themes_animated);
 
@@ -29,7 +30,14 @@ const GroupsInTheCoup = () => {
   // Colors
   const ALMOST_BLACK = '#0f0f0f';
   const ALMOST_WHITE = '#e0e0e0';
+  const ALMOST_GRAY = '#212529';
   const GRAY = '#b5b5b5';
+
+  // Size
+  const MOBILE_NODE_RADIUS = 60;
+  const DESKTOP_NODE_RADIUS = 80;
+  const MOBILE_LABEL_MIN_FONT_SIZE = 20;
+  const DESKTOP_LABEL_MIN_FONT_SIZE = 45;
 
   const handleClose = () => {
     setShow(false);
@@ -89,22 +97,30 @@ const GroupsInTheCoup = () => {
 
     // Add labels
     series.nodes.template.label.text = '{name}';
-    series.minRadius = 80;
-    series.maxRadius = 80;
 
     // Tool tip settings
     series.nodes.template.tooltipText = '{description}';
     series.tooltip.label.wrap = true;
-    series.tooltip.label.width = 300;
+
+    // if user is using on a mobile device, decrease the size of nodes & labels
+    if (isMobile()) {
+      series.minRadius = MOBILE_NODE_RADIUS;
+      series.maxRadius = MOBILE_NODE_RADIUS;
+      series.tooltip.label.width = 150;
+    } else {
+      series.minRadius = DESKTOP_NODE_RADIUS;
+      series.maxRadius = DESKTOP_NODE_RADIUS;
+      series.tooltip.label.width = 300;
+    }
 
     // Custom font size for each node
     // source: https://stackoverflow.com/questions/56868925/amchart-4-force-directed-tree-dynamic-font-size
     series.nodes.template.events.on('ready', (event) => {
-      const fontSize = Math.min(
-        45,
-        Math.ceil(event.target.circle.radius * 0.23)
-        // Math.ceil(tempRadius * 0.25)
-      );
+      const minFontSize = isMobile()
+        ? MOBILE_LABEL_MIN_FONT_SIZE
+        : DESKTOP_LABEL_MIN_FONT_SIZE;
+      const radius = isMobile() ? MOBILE_NODE_RADIUS : DESKTOP_NODE_RADIUS;
+      const fontSize = Math.min(minFontSize, Math.ceil(radius * 0.23));
       // eslint-disable-next-line no-param-reassign
       event.target.fontSize = fontSize;
       // eslint-disable-next-line no-param-reassign
@@ -113,17 +129,42 @@ const GroupsInTheCoup = () => {
     series.nodes.template.label.wrap = true;
 
     series.nodes.template.events.on('hit', (event) => {
+      const targetNode = event.target;
+      // auto-collapse other root nodes when different root node is exploded
+      if (targetNode.isActive) {
+        series.nodes.each((node) => {
+          if (
+            targetNode !== node &&
+            node.isActive &&
+            targetNode.dataItem.level === node.dataItem.level
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            node.isActive = false;
+            // eslint-disable-next-line no-param-reassign
+            node.circle.fill = am4core.color(ALMOST_BLACK);
+            // eslint-disable-next-line no-param-reassign
+            node.label.fill = am4core.color(ALMOST_WHITE);
+          } else {
+            // for uncollapsed leaf nodes, display pointer cursor on hover
+            // eslint-disable-next-line no-param-reassign
+            node.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+          }
+        });
+        if (targetNode.dataItem.level === 0) {
+          targetNode.circle.fill = am4core.color(ALMOST_GRAY);
+          targetNode.label.fill = am4core.color(ALMOST_WHITE);
+        }
+      } else {
+        // eslint-disable-next-line no-lonely-if
+        if (targetNode.dataItem.level === 0) {
+          targetNode.circle.fill = am4core.color(ALMOST_BLACK);
+          targetNode.label.fill = am4core.color(ALMOST_WHITE);
+        }
+      }
       if (event.target.dataItem && event.target.dataItem.hasContent) {
         setTitle(event.target.dataItem.name);
         setContent(event.target.dataItem.content);
         setReferences(event.target.dataItem.references);
-        // eslint-disable-next-line no-console
-        console.log('references: ', references);
-        // if (event.target.dataItem.isContentList) {
-        //   setContent(event.target.dataItem.contentList);
-        // } else {
-        //   setContent(event.target.dataItem.content);
-        // }
         handleShow();
       }
     });
@@ -144,12 +185,6 @@ const GroupsInTheCoup = () => {
       <LoadingSpinner show={!loaded} />
       <BackButton route="/" />
       <div id="chartdiv" style={{ width: '100%', height: '100%' }}>
-        {/* <EventModal
-          title={title}
-          content={content}
-          show={show}
-          onHide={handleClose}
-        /> */}
         <BasicModal
           title={title}
           content={content}
@@ -160,14 +195,6 @@ const GroupsInTheCoup = () => {
       </div>
     </div>
   );
-  // return (
-  //   <BasicModal
-  //     title="Title"
-  //     content="This is a sample content"
-  //     show={show}
-  //     setShow={setShow}
-  //   />
-  // );
 };
 
 export default GroupsInTheCoup;
