@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './TimelineEvents.css';
 import ScrollAnimContainer from '../scroll-anim-container/ScrollAnimContainer';
 import ScrollAnimItem from '../scroll-anim-container/ScrollAnimItem';
 import EventDetails from './EventDetails';
 
-const TimelineEvents = ({ currEvent, eventData, onChange }) => {
-  const [dates, setDates] = useState([]);
-
-  useEffect(() => {
-    setDates(eventData.map((event) => event.dates).flat());
-  }, [eventData]);
-
+const TimelineEvents = ({ currObjIdx, timelineObjs, onChange }) => {
   return (
     <div className="timeline-events-container">
-      {dates.length > 0 && (
-        <ScrollAnimContainer showChild={currEvent} onChange={onChange}>
-          {dates.map((date) => (
+      {timelineObjs.length > 0 && (
+        <ScrollAnimContainer showChildIdx={currObjIdx} onChange={onChange}>
+          {timelineObjs.map((obj) => (
             <ScrollAnimItem
-              key={date.date}
-              name={date.date}
+              key={obj.content.title}
               content={
                 <EventDetails
-                  date={date.date}
-                  description={date.content}
-                  title={date.title}
-                  references={date.learnMore}
+                  date={obj.content.date}
+                  description={obj.content.content}
+                  title={obj.content.title}
+                  references={obj.content.learnMore}
                 />
               }
             />
           ))}
         </ScrollAnimContainer>
       )}
-      ;
     </div>
   );
 };
@@ -41,16 +33,25 @@ TimelineEvents.propTypes = {
   controllers: PropTypes.shape({
     moveNext: PropTypes.func,
   }),
-  currEvent: PropTypes.string, // name of currently selected event
+  currObjIdx: PropTypes.number, // idx of currently selected obj
   onChange: PropTypes.func, // callback function
-  eventData: PropTypes.arrayOf(PropTypes.object),
+  timelineObjs: PropTypes.arrayOf(
+    PropTypes.shape({
+      content: PropTypes.shape({
+        title: PropTypes.string,
+        date: PropTypes.string,
+        content: PropTypes.string,
+        learnMore: PropTypes.string,
+      }),
+    })
+  ),
 };
 
 TimelineEvents.defaultProps = {
   controllers: {},
-  currEvent: '',
+  currObjIdx: 0,
   onChange: PropTypes.func,
-  eventData: [],
+  timelineObjs: [],
 };
 
 export default TimelineEvents;

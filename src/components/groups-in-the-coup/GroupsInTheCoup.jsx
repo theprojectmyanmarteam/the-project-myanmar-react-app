@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './GroupsInTheCoup.css';
 import * as am4core from '@amcharts/amcharts4/core';
 // eslint-disable-next-line camelcase
-import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDirected';
+import * as am4PluginsForceDirected from '@amcharts/amcharts4/plugins/forceDirected';
 // eslint-disable-next-line camelcase
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet';
 
 import EventModal from '../EventModal';
 import BackButton from '../BackButton';
@@ -56,14 +56,14 @@ const GroupsInTheCoup = () => {
     // Create chart
     const chart = am4core.create(
       'chartdiv',
-      am4plugins_forceDirected.ForceDirectedTree
+      am4PluginsForceDirected.ForceDirectedTree
     );
     chart.events.on('appeared', () => {
       setLoaded(true);
     });
     // Create series
     const series = chart.series.push(
-      new am4plugins_forceDirected.ForceDirectedSeries()
+      new am4PluginsForceDirected.ForceDirectedSeries()
     );
     series.data = data;
     // Set up data fields

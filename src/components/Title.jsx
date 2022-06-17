@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Typist from 'react-typist';
 import 'react-typist/dist/Typist.css';
 
-import { Helmet } from 'react-helmet';
+import Helmet from 'react-helmet';
 
 import './Title.css';
 

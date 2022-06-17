@@ -4,19 +4,17 @@
   display: flex;
 }
 
-.timeline-chart-container {
+.timeline-scroll-container {
   position: relative;
   height: 100%;
-  width: 60%;
+  width: 55%;
+  overflow: auto;
+  scroll-behavior: smooth;
 }
 
-.timeline-circle {
-  position: absolute;
-  top: 50%; /* position the top  edge of the element at the middle of the parent */
-  left: 50%; /* position the left edge of the element at the middle of the parent */
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  pointer-events: none;
+.svg-container {
+  height: 100%;
+  width: 100px;
 }
 
 .timeline-title {
@@ -34,7 +32,7 @@
 
 .side-info-container {
   height: 100%;
-  width: 40%;
+  width: 45%;
   background-color: white;
 }
 
