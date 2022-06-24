@@ -17,3 +17,11 @@ body,
   height: 100%;
   background-color: #0f0f0f;
 }
+
+.nunito-font {
+  font-family: 'Nunito', sans-serif;
+}
+
+.grey-bottom-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

@@ -5,21 +5,21 @@ import ScrollAnimContainer from '../scroll-anim-container/ScrollAnimContainer';
 import ScrollAnimItem from '../scroll-anim-container/ScrollAnimItem';
 import EventDetails from './EventDetails';
 
-const TimelineEvents = ({ currObjIdx, timelineObjs, onChange }) => {
+const TimelineEvents = ({
+  currItemIdx,
+  timelineItems,
+  onChange,
+  hideTitle,
+}) => {
   return (
     <div className="timeline-events-container">
-      {timelineObjs.length > 0 && (
-        <ScrollAnimContainer showChildIdx={currObjIdx} onChange={onChange}>
-          {timelineObjs.map((obj) => (
+      {timelineItems.length > 0 && (
+        <ScrollAnimContainer showChildIdx={currItemIdx} onChange={onChange}>
+          {timelineItems.map((item) => (
             <ScrollAnimItem
-              key={obj.content.title}
+              key={item.content.title}
               content={
-                <EventDetails
-                  date={obj.content.date}
-                  description={obj.content.content}
-                  title={obj.content.title}
-                  references={obj.content.learnMore}
-                />
+                <EventDetails content={item.content} hideTitle={hideTitle} />
               }
             />
           ))}
@@ -33,9 +33,9 @@ TimelineEvents.propTypes = {
   controllers: PropTypes.shape({
     moveNext: PropTypes.func,
   }),
-  currObjIdx: PropTypes.number, // idx of currently selected obj
+  currItemIdx: PropTypes.number, // idx of currently selected item
   onChange: PropTypes.func, // callback function
-  timelineObjs: PropTypes.arrayOf(
+  timelineItems: PropTypes.arrayOf(
     PropTypes.shape({
       content: PropTypes.shape({
         title: PropTypes.string,
@@ -45,13 +45,15 @@ TimelineEvents.propTypes = {
       }),
     })
   ),
+  hideTitle: PropTypes.bool,
 };
 
 TimelineEvents.defaultProps = {
   controllers: {},
-  currObjIdx: 0,
+  currItemIdx: 0,
   onChange: PropTypes.func,
-  timelineObjs: [],
+  timelineItems: [],
+  hideTitle: false,
 };
 
 export default TimelineEvents;

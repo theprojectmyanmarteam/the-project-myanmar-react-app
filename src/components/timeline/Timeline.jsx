@@ -4,21 +4,30 @@ import './Timeline.css';
 
 import Xarrow from 'react-xarrows';
 import Helmet from 'react-helmet';
+// import { useMediaQuery } from 'react-responsive';
 import TimelineEvents from './TimelineEvents';
 import LoadingSpinner from '../LoadingSpinner';
 import TimelineItem from './TimelineItem';
 
 import { getHistoryData, getCoupData } from '../../js/fetchData';
 import { extractTimeline } from '../../js/dataHelper';
+import Layout from '../layout/Layout';
+import TimelineBottomSheet from './TimelineBottomSheet';
+import BackButton from '../BackButton';
 
 const Timeline = ({ type }) => {
-  const [currObjIdx, setCurrObjIdx] = useState(0);
-  const [timelineObjects, setTimelineObjects] = useState([]);
+  const [currItemIdx, setCurrItemIdx] = useState(0);
+  const [timelineItems, setTimelineItems] = useState([]);
   const [timelineHeight, setTimelineHeight] = useState(0);
+  /* Mobile */
+  const [openBottomSheet, setOpenBottomSheet] = useState(false);
+
   const timelineContainerRef = useRef(null);
   const timelineItemsRef = useRef([]);
   const timelineOffsetRef = useRef(0);
   const prevItemDateRef = useRef('');
+
+  // const isDesktop = useMediaQuery({ minWidth: 769 });
 
   const getDiffInDays = (date1, date2) => {
     return (date1.getTime() - date2.getTime()) / (1000 * 3600 * 24);
@@ -64,22 +73,27 @@ const Timeline = ({ type }) => {
           processedTimelineObjs[processedTimelineObjs.length - 1].yPos;
         setTimelineHeight(lastItemYPos + 700);
       }
-      setTimelineObjects(processedTimelineObjs);
+      setTimelineItems(processedTimelineObjs);
     });
   }, []);
 
   /**
    * EventHandler to detect changes in the curr item selected
-   * @param {number} objIdx - the idx of the current selected item
+   * @param {number} itemIdx - the idx of the current selected item
    */
-  const onCurrItemChange = (objIdx) => {
-    if (currObjIdx !== objIdx) {
+  const onCurrItemChange = (itemIdx) => {
+    if (currItemIdx !== itemIdx) {
       timelineContainerRef.current.scrollTop =
-        timelineObjects[objIdx].yPos - 200;
-      const element = timelineItemsRef.current[objIdx];
+        timelineItems[itemIdx].yPos - 200;
+      const element = timelineItemsRef.current[itemIdx];
       element.focus();
     }
-    setCurrObjIdx(objIdx);
+    setCurrItemIdx(itemIdx);
+  };
+
+  const onItemClick = (itemIdx) => {
+    onCurrItemChange(itemIdx);
+    setOpenBottomSheet(true);
   };
 
   return (
@@ -91,29 +105,29 @@ const Timeline = ({ type }) => {
           content="Historical and coup timelines curated by The Project Myanmar team."
         />
       </Helmet>
-      <LoadingSpinner show={timelineObjects.length === 0} />
+      <LoadingSpinner show={timelineItems.length === 0} />
       <div ref={timelineContainerRef} className="timeline-scroll-container">
         <div style={{ height: `${timelineHeight}px` }}>
-          {timelineObjects.map((obj, objIdx) => {
+          {timelineItems.map((item, itemIdx) => {
             const elements = [
               <TimelineItem
-                key={`item-${obj.yPos}`}
-                item={obj}
-                id={`${objIdx}`}
+                key={`item-${item.yPos}`}
+                item={item}
+                id={`${itemIdx}`}
                 ref={(el) => {
-                  timelineItemsRef.current[objIdx] = el;
+                  timelineItemsRef.current[itemIdx] = el;
                 }}
-                onClick={() => onCurrItemChange(objIdx)}
-                autoFocus={objIdx === 0}
+                onClick={() => onItemClick(itemIdx)}
+                autoFocus={itemIdx === 0}
                 onlyDates={type === 'COUP'}
               />,
             ];
-            if (objIdx > 0) {
+            if (itemIdx > 0) {
               elements.push(
                 <Xarrow
-                  key={`arrow-${obj.yPos}`}
-                  start={`${objIdx - 1}`}
-                  end={`${objIdx}`}
+                  key={`arrow-${item.yPos}`}
+                  start={`${itemIdx - 1}`}
+                  end={`${itemIdx}`}
                   startAnchor="bottom"
                   endAnchor="top"
                   showHead={false}
@@ -126,13 +140,24 @@ const Timeline = ({ type }) => {
           })}
         </div>
       </div>
-      <div className="side-info-container">
-        <TimelineEvents
-          currObjIdx={currObjIdx}
-          timelineObjs={timelineObjects}
-          onChange={onCurrItemChange}
-        />
-      </div>
+      <Layout
+        desktop={
+          <div className="side-info-container">
+            <TimelineEvents
+              currItemIdx={currItemIdx}
+              timelineItems={timelineItems}
+              onChange={onCurrItemChange}
+            />
+          </div>
+        }
+        mobile={
+          <TimelineBottomSheet
+            open={openBottomSheet}
+            item={timelineItems[currItemIdx]}
+            onDismiss={() => setOpenBottomSheet(false)}
+          />
+        }
+      />
     </div>
   );
 };

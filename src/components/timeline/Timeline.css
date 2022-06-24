@@ -7,9 +7,16 @@
 .timeline-scroll-container {
   position: relative;
   height: 100%;
-  width: 55%;
+  width: 100%;
   overflow: auto;
   scroll-behavior: smooth;
+}
+
+/* Desktop */
+@media only screen and (min-width: 769px) {
+  .timeline-scroll-container {
+    width: 55%;
+  }
 }
 
 .svg-container {
@@ -63,7 +70,7 @@
     width: 100%;
     padding: 5vw;
   }
-  
+
   .side-info-container {
     width: 100%;
   }

@@ -15,26 +15,28 @@ const TimelineItem = React.forwardRef(
         onClick={onClick}
         autoFocus={autoFocus}
       >
-        <svg
-          width="100"
-          height="50"
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-        >
-          <g>
-            <circle
-              className="timeline-item-circle"
-              cx="50"
-              cy="43"
-              r="30"
-              stroke="white"
-              strokeWidth="5"
-              fill="none"
-              id={id}
-            />
-          </g>
-        </svg>
         <div>
+          <svg
+            width="100"
+            height="50"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+          >
+            <g>
+              <circle
+                className="timeline-item-circle"
+                cx="50"
+                cy="43"
+                r="30"
+                stroke="white"
+                strokeWidth="5"
+                fill="none"
+                id={id}
+              />
+            </g>
+          </svg>
+        </div>
+        <div className="timeline-item-text">
           {onlyDates
             ? `${item.content.date}`
             : `${item.content.date} - ${item.content.title}`}
