@@ -4,7 +4,7 @@ import './Timeline.css';
 
 import Xarrow from 'react-xarrows';
 import Helmet from 'react-helmet';
-// import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
 import TimelineEvents from './TimelineEvents';
 import LoadingSpinner from '../LoadingSpinner';
 import TimelineItem from './TimelineItem';
@@ -26,7 +26,7 @@ const Timeline = ({ type }) => {
   const timelineOffsetRef = useRef(0);
   const prevItemDateRef = useRef('');
 
-  // const isDesktop = useMediaQuery({ minWidth: 769 });
+  const isDesktop = useMediaQuery({ minWidth: 769 });
 
   const getDiffInDays = (date1, date2) => {
     return (date1.getTime() - date2.getTime()) / (1000 * 3600 * 24);
@@ -117,7 +117,7 @@ const Timeline = ({ type }) => {
                   timelineItemsRef.current[itemIdx] = el;
                 }}
                 onClick={() => onItemClick(itemIdx)}
-                autoFocus={itemIdx === 0}
+                autoFocus={isDesktop && itemIdx === 0}
                 onlyDates={type === 'COUP'}
               />,
             ];
