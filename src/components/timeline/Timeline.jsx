@@ -13,7 +13,6 @@ import { getHistoryData, getCoupData } from '../../js/fetchData';
 import { extractTimeline } from '../../js/dataHelper';
 import Layout from '../layout/Layout';
 import TimelineBottomSheet from './TimelineBottomSheet';
-import BackButton from '../BackButton';
 
 const Timeline = ({ type }) => {
   const [currItemIdx, setCurrItemIdx] = useState(0);
