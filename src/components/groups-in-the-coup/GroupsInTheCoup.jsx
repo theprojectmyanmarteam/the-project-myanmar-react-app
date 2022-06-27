@@ -7,12 +7,11 @@ import * as am4plugins_forceDirected from '@amcharts/amcharts4/plugins/forceDire
 // eslint-disable-next-line camelcase
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Helmet } from 'react-helmet';
+import { useMediaQuery } from 'react-responsive';
 
 import BasicModal from '../utils/BasicModal';
 import BackButton from '../BackButton';
 import LoadingSpinner from '../LoadingSpinner';
-
-import isMobile from '../utils/browserUtils';
 
 am4core.useTheme(am4themes_animated);
 
@@ -23,6 +22,8 @@ const GroupsInTheCoup = () => {
   const [references, setReferences] = useState('');
   const [data, setData] = useState([]);
   const [loaded, setLoaded] = useState(false);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 450px)' });
 
   const BACKEND_API_BASE_URL = process.env.REACT_APP_BACKEND_API_BASE_URL;
   const BACKEND_API_SECRET = process.env.REACT_APP_BACKEND_API_SECRET;
@@ -103,7 +104,7 @@ const GroupsInTheCoup = () => {
     series.tooltip.label.wrap = true;
 
     // if user is using on a mobile device, decrease the size of nodes & labels
-    if (isMobile()) {
+    if (isMobile) {
       series.minRadius = MOBILE_NODE_RADIUS;
       series.maxRadius = MOBILE_NODE_RADIUS;
       series.tooltip.label.width = 150;
@@ -116,10 +117,10 @@ const GroupsInTheCoup = () => {
     // Custom font size for each node
     // source: https://stackoverflow.com/questions/56868925/amchart-4-force-directed-tree-dynamic-font-size
     series.nodes.template.events.on('ready', (event) => {
-      const minFontSize = isMobile()
+      const minFontSize = isMobile
         ? MOBILE_LABEL_MIN_FONT_SIZE
         : DESKTOP_LABEL_MIN_FONT_SIZE;
-      const radius = isMobile() ? MOBILE_NODE_RADIUS : DESKTOP_NODE_RADIUS;
+      const radius = isMobile ? MOBILE_NODE_RADIUS : DESKTOP_NODE_RADIUS;
       const fontSize = Math.min(minFontSize, Math.ceil(radius * 0.23));
       // eslint-disable-next-line no-param-reassign
       event.target.fontSize = fontSize;
