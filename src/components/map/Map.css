@@ -1,33 +1,29 @@
 .mapdiv {
-    width: 100vw;
-    height: 85vh;
+  width: 100vw;
+  height: 85vh;
 }
 
 .map-info-container {
-    display: none;
-    width: 50vw;
-    height: 85vh;
-    padding: 10vh;
+  display: none;
+  width: 50vw;
+  height: 85vh;
+  padding: 10vh;
 }
 
 .shown {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .myanmar-only {
-    width: 50vw;
-}
-
-.map-info-detail {
-
+  width: 50vw;
 }
 
 @media only screen and (max-width: 800px) {
-    .map-info-detail {
-        font-size: 0.7rem;
-    }
+  .map-info-detail {
+    font-size: 0.7rem;
+  }
 }

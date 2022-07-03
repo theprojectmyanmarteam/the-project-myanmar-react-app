@@ -22,11 +22,13 @@
     "react-icons": "^4.2.0",
     "react-responsive": "^9.0.0-beta.10",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "react-sound": "^1.2.0",
     "react-spinners": "^0.11.0",
     "react-spring": "^9.0.0",
+    "react-spring-bottom-sheet": "^3.4.1",
     "react-typist": "^2.0.5",
+    "react-xarrows": "^2.0.2",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
@@ -55,7 +57,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
-    "eslint": "^7.23.0",
+    "eslint": "^8.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
