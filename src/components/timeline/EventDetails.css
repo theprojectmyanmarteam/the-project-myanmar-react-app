@@ -25,10 +25,7 @@
   color: black;
   font-size: 50px;
   text-align: left;
-  margin-right: 20px;
-  margin-left: 20px;
   width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .event-details-date-divider {
@@ -47,6 +44,8 @@
   align-items: center;
   justify-content: flex-end;
   padding-top: 14px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .event-details-svg {
@@ -59,10 +58,7 @@
   color: black;
   overflow-y: auto;
   overflow-wrap: break-word;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-top: 10px;
+  padding: 10px 20px 20px 20px;
   text-align: left;
 }
 
@@ -78,33 +74,13 @@
   font-weight: bold;
 }
 
-.line1 {
-  width: 20px;
-  height: 100%;
-  background-color: black;
-}
-
-.line2 {
-  height: 20px;
-  width: 100%;
-  background-color: black;
-  margin-left: -10px;
-}
-
-.anchor {
-  display: none;
-}
-
 @media only screen and (max-width: 700px) {
   .event-details-content {
     width: 100%;
   }
 
-  .line {
-    display: none;
-  }
-
-  .line2 {
-    width: 70%;
+  .event-details-date-container {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
