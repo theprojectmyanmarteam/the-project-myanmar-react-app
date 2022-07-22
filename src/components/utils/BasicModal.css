@@ -1,0 +1,93 @@
+#portal .basic-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.basic-modal-container .modal {
+  z-index: 1;
+  padding: 15px;
+  overflow-y: scroll;
+  width: 80%;
+  height: 75%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  position: relative;
+  animation: animate 0.3s;
+}
+
+.basic-modal-content {
+  width: 100%;
+  height: 100%;
+}
+
+.basic-modal-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 32px;
+  padding-top: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.basic-modal-horizontal-line {
+  height: 20px;
+  width: 10%;
+  background-color: black;
+  margin-right: -10px;
+}
+
+.basic-modal-svg {
+  height: 100%;
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.basic-modal-title {
+  color: black;
+  font-family: 'Nunito', sans-serif;
+  font-size: 45px;
+  text-align: left;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.basic-modal-header button {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  font-size: 15px;
+  padding: 8px 11px;
+  color: black;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.basic-modal-header button:hover {
+  color: white;
+  background-color: black;
+}
+
+@keyframes animate {
+  from {
+    transform: scale(0.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}
