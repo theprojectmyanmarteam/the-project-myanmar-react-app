@@ -91,3 +91,41 @@
     transform: scale(1);
   }
 }
+
+@media only screen and (max-width: 800px) {
+  .modal {
+    position: absolute !important;
+    width: 100% !important;
+    height: 80% !important;
+    bottom: 0px !important;
+    left: 0px !important;
+    right: 0px !important;
+    top: auto !important;
+  }
+
+  .basic-modal-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .basic-modal-container .modal {
+    animation: animateMobile 0.3s;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+}
+
+@keyframes animateMobile {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
