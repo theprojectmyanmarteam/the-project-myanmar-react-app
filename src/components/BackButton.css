@@ -15,3 +15,9 @@
   background-color: #212529;
   color: #fcfcfc;
 }
+
+@media only screen and (max-width: 800px) {
+  .back-btn-text {
+    display: none;
+  }
+}
