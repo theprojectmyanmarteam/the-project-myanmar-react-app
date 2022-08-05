@@ -14,8 +14,6 @@ const ScrollAnimItem = ({
   shown,
   setNextButtonConfig,
   setPrevButtonConfig,
-  setName,
-  name,
 }) => {
   const [nextScrollEnabled, setNextScrollEnabled] = useState(
     nextButton.scrollable
@@ -34,12 +32,6 @@ const ScrollAnimItem = ({
   useEffect(() => {
     setPrevButtonConfig(prevConfig);
   }, [prevConfig]);
-
-  useEffect(() => {
-    if (name) {
-      setName(name);
-    }
-  }, []);
 
   // checks whether current scroll is at the bottom of the given element
   const isAtElementBottom = (element) => {
@@ -80,16 +72,17 @@ const ScrollAnimItem = ({
 
 ScrollAnimItem.propTypes = {
   content: PropTypes.element,
-  name: PropTypes.string, // name of this item
   nextButton: PropTypes.shape({
     show: PropTypes.bool, // set to false to hide this button
     label: PropTypes.string, // put a label next to the button
     scrollable: PropTypes.bool, // can be triggered by scroll
+    onClick: PropTypes.func,
   }),
   prevButton: PropTypes.shape({
     show: PropTypes.bool,
     label: PropTypes.string,
     scrollable: PropTypes.bool,
+    onClick: PropTypes.func,
   }),
   moveNext: PropTypes.func,
   movePrev: PropTypes.func,
@@ -97,7 +90,6 @@ ScrollAnimItem.propTypes = {
   shown: PropTypes.bool, // true if this current element is shown
   setNextButtonConfig: PropTypes.func,
   setPrevButtonConfig: PropTypes.func,
-  setName: PropTypes.func,
 };
 
 ScrollAnimItem.defaultProps = {
@@ -107,16 +99,17 @@ ScrollAnimItem.defaultProps = {
       <p>This is a section</p>{' '}
     </div>
   ),
-  name: '',
   nextButton: {
     show: true,
     label: '',
     scrollable: false,
+    onClick: () => {},
   },
   prevButton: {
     show: true,
     label: '',
     scrollable: false,
+    onClick: () => {},
   },
   moveNext: () => {},
   movePrev: () => {},
@@ -124,7 +117,6 @@ ScrollAnimItem.defaultProps = {
   shown: false,
   setNextButtonConfig: () => {},
   setPrevButtonConfig: () => {},
-  setName: () => {},
 };
 
 export default ScrollAnimItem;

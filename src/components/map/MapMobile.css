@@ -1,25 +1,37 @@
-.mapdiv {
+.mapdiv-m {
   width: 100vw;
   height: 85vh;
 }
 
-.map-info-container {
-  display: none;
-  width: 50vw;
-  height: 85vh;
-  padding: 10vh;
+.map-container-m {
+  display: flex;
+  flex-direction: column;
 }
 
-.shown {
+.map-info-container-m {
+  display: none;
+}
+
+.detail-title-m {
+  display: none;
+}
+
+.shown-m {
   display: flex;
   flex-direction: column;
   align-content: center;
   justify-content: center;
   align-items: center;
+  padding: 10vw;
 }
 
-.myanmar-only {
-  width: 50vw;
+.myanmar-only-m {
+  height: 100%;
+}
+
+.map-chart-container {
+  height: 40vh;
+  margin-left: 10vw;
 }
 
 @media only screen and (max-width: 800px) {

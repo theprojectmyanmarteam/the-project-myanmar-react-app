@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './TimelineEvents.css';
 import ScrollAnimContainer from '../scroll-anim-container/ScrollAnimContainer';
 import ScrollAnimItem from '../scroll-anim-container/ScrollAnimItem';
 import EventDetails from './EventDetails';
 
-const TimelineEvents = ({ currEvent, eventData, onChange }) => {
-  const [dates] = useState(eventData.map((event) => event.dates).flat());
-
+const TimelineEvents = ({
+  currItemIdx,
+  timelineItems,
+  onChange,
+  hideTitle,
+}) => {
   return (
     <div className="timeline-events-container">
-      <ScrollAnimContainer showChild={currEvent} onChange={onChange}>
-        {dates.map((date) => (
-          <ScrollAnimItem name={date} content={<EventDetails date={date} />} />
-        ))}
-      </ScrollAnimContainer>
+      {timelineItems.length > 0 && (
+        <ScrollAnimContainer showChildIdx={currItemIdx} onChange={onChange}>
+          {timelineItems.map((item) => (
+            <ScrollAnimItem
+              key={item.content.title}
+              content={
+                <EventDetails content={item.content} hideTitle={hideTitle} />
+              }
+            />
+          ))}
+        </ScrollAnimContainer>
+      )}
     </div>
   );
 };
@@ -23,16 +33,27 @@ TimelineEvents.propTypes = {
   controllers: PropTypes.shape({
     moveNext: PropTypes.func,
   }),
-  currEvent: PropTypes.string, // name of currently selected event
+  currItemIdx: PropTypes.number, // idx of currently selected item
   onChange: PropTypes.func, // callback function
-  eventData: PropTypes.arrayOf(PropTypes.object),
+  timelineItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      content: PropTypes.shape({
+        title: PropTypes.string,
+        date: PropTypes.string,
+        content: PropTypes.string,
+        learnMore: PropTypes.string,
+      }),
+    })
+  ),
+  hideTitle: PropTypes.bool,
 };
 
 TimelineEvents.defaultProps = {
   controllers: {},
-  currEvent: '',
+  currItemIdx: 0,
   onChange: PropTypes.func,
-  eventData: [],
+  timelineItems: [],
+  hideTitle: false,
 };
 
 export default TimelineEvents;

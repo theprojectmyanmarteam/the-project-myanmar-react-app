@@ -1,0 +1,37 @@
+.timeline-item-circle {
+  transform: rotateX(55deg);
+}
+
+.timeline-item-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* truncates with ellipses at 2 lines */
+  -webkit-box-orient: vertical;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* Mobile */
+@media only screen and (max-width: 768px) {
+  .timeline-item-text {
+    font-size: 16px;
+  }
+}
+
+.timeline-item {
+  position: absolute;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #0f0f0f;
+  border: none;
+  border-radius: 0;
+}
+
+.timeline-item:hover,
+.timeline-item:active,
+.timeline-item:focus {
+  background-color: #212529 !important;
+}

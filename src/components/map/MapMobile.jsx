@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import { useSpring, animated, config } from 'react-spring';
-import './Map.css';
+import './MapMobile.css';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4geodata_worldLow from '@amcharts/amcharts4-geodata/worldLow';
@@ -13,7 +13,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 am4core.useTheme(am4themes_animated);
 am4core.addLicense('ch-custom-attribution');
 
-const Map = ({ visible, reachedSucess }) => {
+const MapMobile = ({ visible, reachedSucess }) => {
   const continents = {
     AF: 0,
     AN: 1,
@@ -31,7 +31,7 @@ const Map = ({ visible, reachedSucess }) => {
   });
   // const reachedSucess = () => {
   //   controllers.showNext();
-  // }
+  // };
   useEffect(() => {
     /* Chart code */
 
@@ -81,6 +81,7 @@ const Map = ({ visible, reachedSucess }) => {
     countryPolygon.events.on('ready', function (ev) {
       //console.log('North: ' + x.north + '; East: ' + x.east + '; South: ' +  x.south + '; West: ' + x.west + '; Zoom: ' + x.zoomLevel)
       //x.zoomLevel = 8.75;
+
       ev.target.series.chart.zoomToMapObject(ev.target, 10.0, true);
       x.seriesContainer.draggable = false;
       x.seriesContainer.resizable = false;
@@ -88,18 +89,7 @@ const Map = ({ visible, reachedSucess }) => {
     });
 
     polygonTemplate.events.on('hit', function (ev) {
-      console.log(
-        'North: ' +
-          x.north +
-          '; East: ' +
-          x.east +
-          '; South: ' +
-          x.south +
-          '; West: ' +
-          x.west +
-          '; Zoom: ' +
-          x.zoomLevel
-      );
+      
       if (lastSelected) {
         // This line serves multiple purposes:
         // 1. Clicking a country twice actually de-activates, the line below
@@ -129,6 +119,7 @@ const Map = ({ visible, reachedSucess }) => {
           toggleMMOnlyStyle();
           x.seriesContainer.draggable = false;
           x.zoomLevel = 10.0;
+          debugMap();
         }
         reachedSucess();
       } else {
@@ -164,6 +155,11 @@ const Map = ({ visible, reachedSucess }) => {
     polygonSeries.exclude = ['AQ'];
 
     // Zoom control
+    x.homeZoomLevel = 2.5;
+    x.homeGeoPoint = {
+      latitude: 33.05,
+      longitude: 90.52,
+    };
     //x.zoomControl = new am4maps.ZoomControl();
     x.seriesContainer.draggable = true;
     x.seriesContainer.resizable = false;
@@ -210,17 +206,42 @@ const Map = ({ visible, reachedSucess }) => {
 
     function toggleMMOnlyStyle() {
       const leftDiv = document.getElementById('mapdiv');
-      leftDiv.classList.contains('myanmar-only')
-        ? leftDiv.classList.remove('myanmar-only')
-        : leftDiv.classList.add('myanmar-only');
+      leftDiv.classList.contains('myanmar-only-m')
+        ? leftDiv.classList.remove('myanmar-only-m')
+        : leftDiv.classList.add('myanmar-only-m');
 
       const rightDiv = document.getElementById('map-info-container');
-      rightDiv.classList.contains('shown')
-        ? rightDiv.classList.remove('shown')
-        : rightDiv.classList.add('shown');
+      rightDiv.classList.contains('shown-m')
+        ? rightDiv.classList.remove('shown-m')
+        : rightDiv.classList.add('shown-m');
 
       const mapTitle = document.getElementById('map-title');
       mapTitle.style.display = 'none';
+
+      const detailTitle = document.getElementById('detail-title');
+      detailTitle.style.display = 'block';
+
+      const mapChartContainer = document.getElementById('map-chart-container');
+      mapChartContainer.classList.add('map-chart-container');
+    }
+
+    function debugMap() {
+      console.log(
+        'North: ' +
+          x.north +
+          '; East: ' +
+          x.east +
+          '; South: ' +
+          x.south +
+          '; West: ' +
+          x.west +
+          '; Zoom: ' +
+          x.zoomLevel +
+          '; Lat: ' +
+          x.zoomGeoPoint.latitude +
+          '; Long: ' +
+          x.zoomGeoPoint.longitude
+      );
     }
 
     return () => {
@@ -230,34 +251,39 @@ const Map = ({ visible, reachedSucess }) => {
 
   return (
     <animated.div id="splash-container" style={mapAnim}>
-      <div>
-        <div id="map-title">
-          <h1>Where is Myanmar?</h1>
-          <h5>Click on the right country to proceed</h5>
+      <div className="map-container-m">
+        <div id="detail-title" className="detail-title-m">
+          <h1>Correct!<br></br> This is Myanmar.</h1>
         </div>
-        <div id="mapdiv" className="mapdiv"></div>
-      </div>
-      <div id="map-info-container" className="map-info-container">
-        <div id="map-info-detail" className="map-info-detail">
-          <h1>Correct! This is Myanmar.</h1>
-          <p>
-            Myanmar, also called Burma, is a country located in the western
-            portion of mainland Southeast Asia. Myanmar is bordered by
-            Bangladesh and India to its northwest, China to its northeast, Laos
-            and Thailand to its east and southeast, and the Andaman Sea and the
-            Bay of Bengal to its south and southwest. Myanmar is the largest
-            country in Mainland Southeast Asia and the 10th largest in Asia by
-            area with a population of 54.76 million. It is divided into seven
-            states (ပြည်နယ်) and seven regions (တိုင်းဒေသကြီး) and is roughly
-            about the size of Texas.
-          </p>
+
+        <div id='map-chart-container'>
+          <div id="map-title">
+            <h1>Where is Myanmar?</h1>
+            <h5>Click on the right country to proceed</h5>
+          </div>
+          <div id="mapdiv" className="mapdiv-m"></div>
+        </div>
+        <div id="map-info-container" className="map-info-container-m">
+          <div id="map-info-detail" className="map-info-detail-m">
+            <p>
+              Myanmar, also called Burma, is a country located in the western
+              portion of mainland Southeast Asia. Myanmar is bordered by
+              Bangladesh and India to its northwest, China to its northeast,
+              Laos and Thailand to its east and southeast, and the Andaman Sea
+              and the Bay of Bengal to its south and southwest. Myanmar is the
+              largest country in Mainland Southeast Asia and the 10th largest in
+              Asia by area with a population of 54.76 million. It is divided
+              into seven states (ပြည်နယ်) and seven regions (တိုင်းဒေသကြီး) and
+              is roughly about the size of Texas.
+            </p>
+          </div>
         </div>
       </div>
     </animated.div>
   );
 };
 
-// Map.propTypes = {
+// MapMobile.propTypes = {
 //   controllers: PropTypes.shape({
 //     onHide: PropTypes.func,
 //     visible: PropTypes.bool,
@@ -265,9 +291,9 @@ const Map = ({ visible, reachedSucess }) => {
 //   }),
 // };
 
-Map.defaultProps = {
+MapMobile.defaultProps = {
   onHide: () => {},
   visible: true,
 };
 
-export default Map;
+export default MapMobile;

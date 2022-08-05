@@ -1,27 +1,34 @@
 {
   "name": "the-project-myanmar-react-app",
   "version": "0.1.0",
+  "engines": {
+    "node": "14.13.1"
+  },
   "private": true,
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.18",
+    "@amcharts/amcharts4": "^4.10.22",
     "@amcharts/amcharts4-geodata": "^4.1.20",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "@uiw/react-markdown-preview": "^3.4.0",
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
     "react-icons": "^4.2.0",
-    "react-helmet": "^6.1.0"
+    "react-responsive": "^9.0.0-beta.10",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "react-sound": "^1.2.0",
     "react-spinners": "^0.11.0",
     "react-spring": "^9.0.0",
+    "react-spring-bottom-sheet": "^3.4.1",
     "react-typist": "^2.0.5",
+    "react-xarrows": "^2.0.2",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
@@ -50,7 +57,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
-    "eslint": "^7.23.0",
+    "eslint": "^8.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",

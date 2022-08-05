@@ -46,3 +46,10 @@
   align-items: center;
   justify-content: center;
 }
+
+@media only screen and (max-width: 450px) {
+  .quiz-question-title {
+    width: 85vw;
+    white-space: pre-line;
+  }
+}

@@ -16,7 +16,6 @@ const ScrollAnimSection = ({
   last,
   setNextButtonConfig,
   setPrevButtonConfig,
-  setName,
   onAnimStart,
   onAnimEnd,
 }) => {
@@ -110,7 +109,6 @@ const ScrollAnimSection = ({
       shown: showSection,
       setNextButtonConfig,
       setPrevButtonConfig,
-      setName,
     };
     if (first) {
       props.prevButton = { show: false };
@@ -139,7 +137,6 @@ ScrollAnimSection.propTypes = {
   last: PropTypes.bool,
   setNextButtonConfig: PropTypes.func, // use to control visibility of next button
   setPrevButtonConfig: PropTypes.func, // use to control visibility of prev button
-  setName: PropTypes.func, // use to set the name of the this section
   onAnimStart: PropTypes.func,
   onAnimEnd: PropTypes.func,
 };
@@ -161,7 +158,6 @@ ScrollAnimSection.defaultProps = {
   last: false,
   setNextButtonConfig: () => {}, // use to control visibility of next button
   setPrevButtonConfig: () => {},
-  setName: () => {},
   onAnimStart: () => {},
   onAnimEnd: () => {},
 };

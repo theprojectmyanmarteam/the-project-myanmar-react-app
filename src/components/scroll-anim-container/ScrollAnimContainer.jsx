@@ -15,22 +15,42 @@ import ScrollAnimSection from './ScrollAnimSection';
 
 // const SHOW_BUTTON_DELAY_MS = 800;
 
-const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
+const ScrollAnimContainer = ({
+  children,
+  horizontal,
+  showChildIdx,
+  onChange,
+}) => {
   const [childrenList, setChildrenList] = useState(
-    Array.isArray(children) && children.length > 0
+    Array.isArray(children)
       ? children.map((elem, idx) => ({
           id: idx,
           elem,
           position: idx === 0 ? 0 : 1, // first section starts at center, the rest starts in the front
-          nextButtonConfig: { show: !(idx === 0), label: '' },
-          prevButtonConfig: { show: !(idx === 0), label: '' },
+          nextButtonConfig: {
+            show: !(idx === 0),
+            label: '',
+            onClick: () => {},
+          },
+          prevButtonConfig: {
+            show: !(idx === 0),
+            label: '',
+            onClick: () => {},
+          },
         }))
-      : [{ id: 0, elem: children, position: 0 }]
+      : [
+          {
+            id: 0,
+            elem: children,
+            position: 0,
+            nextButtonConfig: { show: false, label: '', onClick: () => {} },
+            prevButtonConfig: { show: false, label: '', onClick: () => {} },
+          },
+        ]
   );
   const [currChildIdx, setCurrChildIdx] = useState(0);
   const [renderNextButton, setRenderNextButton] = useState(false);
   const [renderPrevButton, setRenderPrevButton] = useState(false);
-  const [nameToIdxMap, setNameToIdxMap] = useState(new Map());
   const [showLabels, setShowLabels] = useState(true);
 
   // animation for next button
@@ -88,33 +108,28 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
     });
   };
 
-  const setCurrent = (idx, name) => {
-    onChange(name);
+  const setCurrent = (idx) => {
+    onChange(idx);
     setPositionOfChildAt(idx, 0);
     setCurrChildIdx(idx);
   };
 
-  const moveToChild = (name) => {
-    const showChildIdx = nameToIdxMap.get(name);
-    if (currChildIdx > showChildIdx) {
-      for (let i = showChildIdx + 1; i <= currChildIdx; i += 1) {
+  const moveToChildAtIdx = (idx) => {
+    if (currChildIdx > idx) {
+      for (let i = idx + 1; i <= currChildIdx; i += 1) {
         setPositionOfChildAt(i, 1);
       }
-    } else if (currChildIdx < showChildIdx) {
-      for (let i = showChildIdx - 1; i >= currChildIdx; i -= 1) {
+    } else if (currChildIdx < idx) {
+      for (let i = idx - 1; i >= currChildIdx; i -= 1) {
         setPositionOfChildAt(i, -1);
       }
     }
-    setCurrent(showChildIdx, name);
+    setCurrent(idx);
   };
 
   useEffect(() => {
-    if (showChild && nameToIdxMap.has(showChild)) {
-      if (currChildIdx !== nameToIdxMap.get(showChild)) {
-        moveToChild(showChild);
-      }
-    }
-  }, [showChild]);
+    moveToChildAtIdx(showChildIdx);
+  }, [showChildIdx]);
 
   const setNextButtonConfigOfChildAt = (childIdx, cfg) => {
     if (cfg.show && childIdx === currChildIdx) {
@@ -134,15 +149,6 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
     setChildrenList((list) => {
       const newList = list;
       newList[childIdx].prevButtonConfig = cfg;
-      return [...newList];
-    });
-  };
-
-  const mapNameOfChildAt = (childIdx, name) => {
-    setNameToIdxMap((prev) => new Map(prev).set(name, childIdx));
-    setChildrenList((prev) => {
-      const newList = prev;
-      newList[childIdx].name = name;
       return [...newList];
     });
   };
@@ -180,7 +186,6 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
             horizontal={horizontal}
             first={idx === 0}
             last={idx === childrenList.length - 1}
-            setName={(name) => mapNameOfChildAt(idx, name)}
             setNextButtonConfig={(cfg) =>
               setNextButtonConfigOfChildAt(idx, cfg)
             }
@@ -196,7 +201,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => movePrev(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].prevButtonConfig.onClick) {
+                childrenList[currChildIdx].prevButtonConfig.onClick();
+              }
+              movePrev(currChildIdx);
+            }}
           >
             <BsChevronCompactUp size="2em" />
           </Button>
@@ -217,7 +227,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => moveNext(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].nextButtonConfig.onClick) {
+                childrenList[currChildIdx].nextButtonConfig.onClick();
+              }
+              moveNext(currChildIdx);
+            }}
           >
             <BsChevronCompactDown size="2em" />
           </Button>
@@ -228,7 +243,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => movePrev(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].prevButtonConfig.onClick) {
+                childrenList[currChildIdx].prevButtonConfig.onClick();
+              }
+              movePrev(currChildIdx);
+            }}
           >
             <BsChevronCompactLeft size="2em" />
           </Button>
@@ -249,7 +269,12 @@ const ScrollAnimContainer = ({ children, horizontal, showChild, onChange }) => {
           <Button
             variant="dark"
             className="nav-button"
-            onClick={() => moveNext(currChildIdx)}
+            onClick={() => {
+              if (childrenList[currChildIdx].nextButtonConfig.onClick) {
+                childrenList[currChildIdx].nextButtonConfig.onClick();
+              }
+              moveNext(currChildIdx);
+            }}
           >
             <BsChevronCompactRight size="2em" />
           </Button>
@@ -265,14 +290,14 @@ ScrollAnimContainer.propTypes = {
     PropTypes.element,
   ]),
   horizontal: PropTypes.bool, // set to true to change orientation to horizontal
-  showChild: PropTypes.string, // name of child you want to show
+  showChildIdx: PropTypes.number, // name of child you want to show
   onChange: PropTypes.func, // callback function on state change
 };
 
 ScrollAnimContainer.defaultProps = {
   children: [],
   horizontal: false,
-  showChild: '',
+  showChildIdx: 0,
   onChange: () => {},
 };
 
