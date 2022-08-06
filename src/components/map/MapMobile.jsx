@@ -250,7 +250,7 @@ const MapMobile = ({ visible, reachedSucess }) => {
   }, []);
 
   return (
-    <animated.div id="splash-container" style={mapAnim}>
+    <animated.div id="splash-container-mobile" style={mapAnim}>
       <div className="map-container-m">
         <div id="detail-title" className="detail-title-m">
           <h1>Correct!<br></br> This is Myanmar.</h1>
