@@ -146,6 +146,7 @@ const Timeline = ({ type }) => {
               currItemIdx={currItemIdx}
               timelineItems={timelineItems}
               onChange={onCurrItemChange}
+              hideTitle={false}
             />
           </div>
         }

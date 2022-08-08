@@ -22,6 +22,10 @@
   height: 100%;
 }
 
+#detail-title {
+  padding-top: 5em;
+}
+
 .detail-title-m {
   display: none;
 }
@@ -52,7 +56,7 @@ g[aria-labelledby='id-2835-title'] {
   visibility: hidden;
 }
 
-.splash-container {
+.splash-container-m {
   min-height: 0;
   padding: 20px 0px;
 }

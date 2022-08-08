@@ -30,7 +30,15 @@ const TimelineBottomSheet = ({ open, onDismiss, item }) => {
         }
       }}
     >
-      <EventDetails ref={initialFocusRef} content={item.content} hideDate />
+      <EventDetails
+        ref={initialFocusRef}
+        content={item.content}
+        hideTitle={false}
+        title={item.content.title}
+        description={item.content.content}
+        references={item.content.learnMore}
+        hideDate
+      />
     </BottomSheet>
   );
 };

@@ -249,7 +249,7 @@ const MapMobile = ({ visible, reachedSucess }) => {
   }, []);
 
   return (
-    <animated.div className="splash-container" style={mapAnim}>
+    <animated.div id="splash-container-mobile" className="splash-container-m" style={mapAnim}>
       <div className="map-container-m">
         <div id="detail-title" className="detail-title-m">
           <h1>

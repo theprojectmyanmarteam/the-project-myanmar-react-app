@@ -19,7 +19,13 @@ const TimelineEvents = ({
             <ScrollAnimItem
               key={item.content.title}
               content={
-                <EventDetails content={item.content} hideTitle={hideTitle} />
+                <EventDetails
+                  content={item.content}
+                  hideTitle={hideTitle}
+                  title={item.content.title}
+                  description={item.content.content}
+                  references={item.content.learnMore}
+                />
               }
             />
           ))}
