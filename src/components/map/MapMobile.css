@@ -1,3 +1,7 @@
+.map-title h1 {
+  font-size: 30px;
+}
+
 .mapdiv-m {
   width: 100vw;
   height: 85vh;
@@ -10,10 +14,20 @@
 
 .map-info-container-m {
   display: none;
+  overflow: auto;
+  margin: 20px 0 60px 0;
+}
+
+.map-info-detail-m {
+  height: 100%;
 }
 
 .detail-title-m {
   display: none;
+}
+
+.detail-title-m h1 {
+  font-size: 35px;
 }
 
 .shown-m {
@@ -22,7 +36,7 @@
   align-content: center;
   justify-content: center;
   align-items: center;
-  padding: 10vw;
+  padding: 0 10vw;
 }
 
 .myanmar-only-m {
@@ -32,6 +46,15 @@
 .map-chart-container {
   height: 40vh;
   margin-left: 10vw;
+}
+
+g[aria-labelledby='id-2835-title'] {
+  visibility: hidden;
+}
+
+.splash-container {
+  min-height: 0;
+  padding: 20px 0px;
 }
 
 @media only screen and (max-width: 800px) {

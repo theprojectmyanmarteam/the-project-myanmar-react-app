@@ -89,7 +89,6 @@ const MapMobile = ({ visible, reachedSucess }) => {
     });
 
     polygonTemplate.events.on('hit', function (ev) {
-      
       if (lastSelected) {
         // This line serves multiple purposes:
         // 1. Clicking a country twice actually de-activates, the line below
@@ -250,14 +249,16 @@ const MapMobile = ({ visible, reachedSucess }) => {
   }, []);
 
   return (
-    <animated.div id="splash-container" style={mapAnim}>
+    <animated.div className="splash-container" style={mapAnim}>
       <div className="map-container-m">
         <div id="detail-title" className="detail-title-m">
-          <h1>Correct!<br></br> This is Myanmar.</h1>
+          <h1>
+            Correct!<br></br> This is Myanmar.
+          </h1>
         </div>
 
-        <div id='map-chart-container'>
-          <div id="map-title">
+        <div id="map-chart-container">
+          <div id="map-title" className="map-title">
             <h1>Where is Myanmar?</h1>
             <h5>Click on the right country to proceed</h5>
           </div>

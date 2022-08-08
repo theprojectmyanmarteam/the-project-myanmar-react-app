@@ -229,7 +229,7 @@ const Map = ({ visible, reachedSucess }) => {
   }, []);
 
   return (
-    <animated.div id="splash-container" style={mapAnim}>
+    <animated.div className="splash-container" style={mapAnim}>
       <div>
         <div id="map-title">
           <h1>Where is Myanmar?</h1>
