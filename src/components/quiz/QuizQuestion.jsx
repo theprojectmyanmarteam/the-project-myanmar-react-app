@@ -24,7 +24,11 @@ const QuizQuestion = ({ controllers, onRightAnswer }) => {
       <div className="quiz-question-title h4">
         <p>What is the capital city of Myanmar?</p>
       </div>
-      {locked ? <BsLock size={30} /> : <BsUnlock size={30} />}
+      {locked ? (
+        <BsLock className="bs-lock-icon" size={30} />
+      ) : (
+        <BsUnlock className="bs-lock-icon" size={30} />
+      )}
       <div className="quiz-answer-container">
         <Button
           variant="outline-light"
