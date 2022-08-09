@@ -51,12 +51,10 @@ const QuizQuestion = ({ controllers, onRightAnswer }) => {
         </Button>
       </div>
       <animated.div className="quiz-question-confirm h5" style={fadeInAnim}>
-        <p>
+        <div className="quiz-correct-text">
           <BsCheck /> CORRECT! <br />
-          <span className="">
-            Naypyidaw is the current capital city of Myanmar.{' '}
-          </span>
-        </p>
+        </div>
+        <div>Naypyidaw is the current capital city of Myanmar. </div>
       </animated.div>
     </div>
   );
