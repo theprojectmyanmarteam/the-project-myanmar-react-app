@@ -22,10 +22,6 @@
   height: 100%;
 }
 
-#detail-title {
-  padding-top: 5em;
-}
-
 .detail-title-m {
   display: none;
 }
@@ -52,7 +48,7 @@
   margin-left: 10vw;
 }
 
-g[aria-labelledby='id-2835-title'] {
+g[aria-labelledby$='title'] {
   visibility: hidden;
 }
 
